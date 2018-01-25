@@ -1,55 +1,139 @@
-# argouml-spl
+# ArgoUML SPL Benchmark
 
-ArgoUML-SPL is a project that aims to extract a SPL from the current ArgoUML codebase.
+A feature location benchmark for single systems and for families of systems. We include the ground-truth, different scenarios and a program to calculate the feature location metrics.
 
-At the moment, we have already modularized the following features:
+## Setting-up
+1. Download this repository by clicking here https://github.com/but4reuse/argouml-spl-benchmark/archive/master.zip and unzip it somewhere in your computer.
 
-<OL>
+2. We will call the Benchmark functionality directly from the Java source code of the benchmark so first you need an Integrated Development Environment (IDE) where you can run Java source code and Apache Ant scripts. But do not worry if you are not expert on them because you will not need to modify anything there, you will need just to launch programs and we will show you how to do it. We will explain the steps using Eclipse but you can use any IDE supporting Java and ant if you know how to do it.
 
-<LI> Design Critics: "Simple agents that continuously execute in a background thread of control. They analyze the design as the designer is working and suggest possible improvements. These suggestions range from indications of syntax errors, to reminders to return to parts of the design that need finishing, to style guidelines, to the advice of expert designers."
+Download Eclipse from https://www.eclipse.org/downloads/ (We tested with Eclipse Oxygen and Eclipse Neon):
 
-<LI> State Diagrams: "State diagrams are used to describe the behavior of a system. State diagrams describe all of the possible states of an object as events occur. Each diagram usually represents objects of a single class and track the different states of its objects through the system."
+And then, select the Java Developers package. This package will have everything you need, if you select another, or you want to use one Eclipse that you have in your computer, you might have problems.
 
-<LI> Activity Diagrams: "Activity diagrams describe the workflow behavior of a system. Activity diagrams are similar to state diagrams because activities are the state of doing something. The diagrams describe the state of activities by showing the sequence of activities performed."
+You will also need to have java installed in your computer (at least Java 1.6). You can check it opening the Command Prompt (cmd) and entering “java -version”
 
-<LI> Sequence Diagrams: "Interaction diagrams model the behavior of use cases by describing the way groups of objects interact to complete the task. Sequence Diagram displays the time sequence of the objects participating in the interaction. This consists of the vertical dimension (time) and horizontal dimension (different objects)."
 
-<LI> Use Case Diagrams: "A use case is a set of scenarios that describing an interaction between a user and a system. A use case diagram displays the relationship among actors and use cases. The two main components of a use case diagram are use cases and actors."
+3. Run Eclipse and Import the projects. In the main menu, File -> import -> General -> Existing projects into workspace. 
 
-<LI> Collaboration Diagrams: "Collaboration diagrams are used to show how objects interact to perform the behavior of a particular use case, or a part of a use case. Along with sequence diagrams, collaborations are used by designers to define and clarify the roles of the objects that perform a particular flow of events of a use case. They are the primary source of information used to determining class responsibilities and interfaces."
 
-<LI> Deployment Diagrams: "A deployment diagram models the run-time architecture of a system. It shows the configuration of the hardware elements (nodes) and shows how software elements and artifacts are mapped onto those nodes."
 
-<LI> Logging: "The purpose of debug log and trace messages is to provide a mechanism that allows the developer to enable output of minor events focused on a specific problem area and to follow what is going on inside ArgoUML."
+In Select root directory, “browse” and select the folder where you have the unzipped content of this repository.
 
-</OL>
+From the list select exactly these projects (Selecting others can cause problems, do not import other nested projects that might be suggested by Eclipse import):
+* argouml-app
+* argouml-build
+* argouml-core-diagrams-sequence2
+* argouml-core-infra
+* argouml-core-model
+* argouml-core-model-euml
+* argouml-core-model-mdf
+* argouml-core-tools
+* ArgoUMLSPLBenchmark
+* org.splevo.casestudy.argoumlspl.generator
 
-<P>
-<B>Feature Model</B>
-<P>
+Select the option "Copy projects into workspace".
 
-<img align="middle" alt="ArgoUML-SPL Feature Model" src="https://github.com/ASERG-UFMG/argouml-spl/blob/master/ArgoUML-SPL_FeatureModel.png"></center>
+The 8 projects starting with argoumlspl- which is the argouml-spl code base.
+The project org.splevo.casestudy.argoumlspl.generator which is a helper to create variants from SPLEvo.
+The project ArgoUMLSPLBenchmark is the Benchmark that you will need to use.
 
-<P>
-<B> Research Paper</B>
-<P>
+At the end of these steps, your Eclipse workspace should look like this:
 
-Marcus Vinicius Couto, Marco Tulio Valente, and Eduardo Figueiredo. <A HREF="http://homepages.dcc.ufmg.br/~mtov/pub/2011_csmr_argouml.pdf"> Extracting Software Product Lines: A Case Study Using Conditional Compilation</A>. In 15th European Conference on Software Maintenance and Reengineering (CSMR), pages 191-200, 2011.
+Do not worry about the errors in the argouml- projects. The benchmark will work with them.
 
-<p>
-<B>Feature Extraction Mechanism</B>
+## Getting ready
 
-<p>At the moment, we are using pre-processor directives in order to modularize and delimit our feature's code. Currently, our implementation is based on the <a href="http://www.slashdev.ca/javapp/">javapp</a> pre-processor.</p>
+### Generating the scenarios
+In the ArgoUMLSPLBenchmark project, there is a folder called “scenarios” containing the predefined scenarios defined in the Benchmark. This step will allow to create the variants associated to each of these scenarios. There is a “configs” folder in each scenario with a list of config files that contains the list of features of each config.
+To start with, open the “ScenarioOriginalVariant” folder, then right click the build.xml file and click on Run As -> Ant Build
 
-<P>
-<B>Examples of Products</B>
+The console will start showing the progress of the generation of the variants
 
-<ul>
+And it will tell you when it will be finished.
 
-<li><a href="https://github.com/ASERG-UFMG/argouml-spl/blob/master/products/argouml-spl_full.zip?raw=true">Product 1: Full ArgoUML application</a> (including the four mentioned features) 
+Once the build is finished. Refresh the folder of the scenario (right click the folder and refresh, or select the folder and press F5). You will have a folder called "variants" with a set of folders (each folder contains a variant).
 
-<li><a href="https://github.com/ASERG-UFMG/argouml-spl/blob/master/products/argouml-spl_no-features.zip?raw=true">Product 2: ArgoUML without the  mentioned features</a> 
-		
-<li><a href="https://github.com/ASERG-UFMG/argouml-spl/blob/master/products/argouml-spl_no-cognitive.zip?raw=true">Product 3: ArgoUML without Design Critics feature</a> 
+In the case of this scenario, there is only one variant
 
-</ul>
+Repeat this process for each scenario in the “scenarios” folder. Notice that, the scenario for example, ScenarioTraditionalVariants with 10 variants might take around half an hour. You will only need to do this process once for each scenario. At least, create the one for the ScenarioTraditionalVariants as it will be needed for the example presented in this document.
+
+Some scenarios will have more than one build file. For example, the one that will generate all possible variants contains 6 parts. You will need to launch the 6 parts. 
+We separated it in parts to try to avoid memory problems.
+
+Troubleshooting (Out of memory error): You might have an out of memory error after the generation of several variants. It happens in a laptop after more than 170 generated variants.
+
+BUILD FAILED
+[...] java.lang.OutOfMemoryError: Compressed class space
+Total time: 503 minutes 42 seconds
+
+We suggest to launch the build.xml of an scenario and then restart Eclipse. It is also important, if a build fail, remove the variants folder of the scenario just to prevent that there are incomplete variants when the build failed.
+
+### Basic information
+
+This section explains what you need to do to use your feature location technique in this  benchmark. There are some important folders in the ArgoUMLSPLBenchmark project that you need to know:
+
+* featuresInfo: It contains a features.txt file with the feature ids, feature names (separated by comma as there are synonyms or alternative namings) and the description. Id, names and description are separated by the symbol “;”.
+You might want to use the information there to create queries for feature location techniques based on information retrieval.
+scenarios: The benchmark predefined scenarios, you should provide the results for each of them. In each scenario you have the “variants” folder  with the source code of each variant (now that you have created the scenarios) and a “configs” folder where you have information of the features present in each variant.
+You might want to use the information in the configs folder for intersection-based techniques.
+
+* groundTruth: A set of 24 txt files containing the traces of the feature, feature combinations and feature negations of ArgoUML SPL.
+Obviously, you cannot use this ground-truth information inside your feature location technique.
+yourResults: This is the folder where you need to put your results (either manually or automatically, as you prefer). The results must be in the same format as the ground-truth.
+
+* yourResultsMetrics: Once you put your results in the “yourResults” folder, you can launch the metrics calculation program to get a csv file in this “yourResultsMetrics” folder. We will show how in the next sections.
+
+## A complete example showing the whole process
+We have prepared an example of a feature location technique to show you the process. This technique will output the results in the “yourResults” folder as the benchmark is expecting. Remember that you can do this automatically, or you can just put the results there manually.
+The technique is in the ArgoUMLSPLBenchmark project, in the src/techniqueExample package. Right click the java class there -> Run as -> Java Application
+
+The console will output the process (and the technique itself also calculated and reports the time measure, remember to measure also the time of your feature location technique)
+
+Then refresh “yourResults” folder (select the folder and press F5).
+
+In the case of your feature location technique, the results will be the ones created from your technique. In fact, your feature location technique does not need to be in Java, you can use whatever you want and then put the results there.
+
+Then, we launch the program to get the metrics. It is in the src/metricsCalculation package. Right click the java file, Run as -> Java application.
+
+You can see the progress in the console
+
+Then, refresh “yourResultsMetrics” and you will have this csv file with all the metrics
+
+In the console output you have also a gnuplot script that you can copy and paste in gnuplot.
+http://www.gnuplot.info/download.html
+Tested with gnuplot 5.2
+And then click enter and you have the graph below. You can use as example to graphically report the metrics of a given scenario.
+
+
+## Utils for feature location techniques' developers
+In the src/utils package of ArgoUMLSPLBenchmark project, you have some Util classes that might be useful if you are using Java to develop your feature location technique. However, you can still use the benchmark without using them. We present them just in case you want to take them.
+
+FeatureUtils is helpful to get the information about features and configurations that you can use for each scenario.
+
+TraceIdUtils can be helpful to create the id of the traces needed for “yourResults” files. If you want to use it, this class expects you to use the JDT Java parser as the parameter types belongs to JDT.
+
+Finally, FileUtils has standard helpful methods to manipulate files, write in files etc.
+
+## Launching a variant (if you want to do it for some reason)
+
+If for some reason you want to launch a specific variant: in Eclipse, File -> import -> existing projects and select the folder of the generated variant. Now you will have this variant as an Eclipse project. Then, right click the file ArgoUML.launch that exists in the variant and click on Run as -> ArgoUML. The ArgoUML will be executed.
+
+Troubleshooting (ArgoUML variant is not launching)
+If it is not executed and you have an error in the Eclipse console
+
+[...] java.lang.Error: Unresolved compilation problem.
+
+you should set java compiler compatibility with Java 1.6. For this, right click the imported project -> Properties -> Java Compiler and set the Compiler compliance level to 1.6.
+
+
+## Technical documentation about the benchmark (no needed for feature location techniques’ developers)
+
+### Ground-Truth extractor
+
+GroundTruthExtractor.java has a main method used to create the txt files in the groundTruth folder based on a parsing of the ArgoUML SPL source code. It launch some JUnit tests that are in the extractor.tests package.
+
+### Utils for creating the scenarios
+RandomScenariosConfigsGenerator.java has a main method used to define the random scenarios.
+
+ScenarioBuildXMLFilesGenerator.java has a main method used to create the build files of each scenario based on the content of the configs folder of each scenario.
