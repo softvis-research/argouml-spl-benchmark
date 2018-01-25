@@ -3,8 +3,10 @@
 # ArgoUML SPL Benchmark
 A feature location benchmark for single systems and for families of systems. We include the ground-truth, different scenarios and a program to calculate the feature location metrics.
 
+[<img src="https://github.com/but4reuse/argouml-spl-benchmark/blob/master/README_images/pdf.png" align="left" width="80" height="80">](https://sites.google.com/site/jabiermartinezwebsite/ArgoUML_SPL_Benchmark.pdf)
+
 Read the description of the benchmark in: _J. Martinez, N. Ordoñez, X. Tërnava, T. Ziadi, J. Aponte, E. Figueiredo and M. T. Valente._
-**Feature Location Benchmark with ArgoUML SPL**. SPLC 2018 Challenges Track, Gothenburg, Sweden, 10-14 Sept
+**Feature Location Benchmark with ArgoUML SPL**. 22nd International Systems and Software Product Line Conference (SPLC 2018) Challenges Track. Gothenburg, Sweden, 10-14 Sept 2018
 
 ## Setting-up
 1. Download this repository by clicking here https://github.com/but4reuse/argouml-spl-benchmark/archive/master.zip and unzip it somewhere in your computer.
