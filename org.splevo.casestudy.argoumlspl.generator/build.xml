@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+SPLevo ArgoUML-SPL Case Study
+=============================
+
+Build script to generate the product variants to be
+analyzed by the SPLevo tooling.
+Further Information about the SPLevo Project: http://www.splevo.org
+
+Author: Benjamin Klatt <klatt@fzi.de>, Christian Busch <busch@fzi.de>
+ -->
+<project basedir="." default="" name="ArgoUML-SPL Case Study">
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant without any optional feature. -->
+	<!-- ====================================================== -->
+	<target name="generate-basic-variant">
+
+		<property name="project.name" value="argouml-basic-variant" />
+		<property name="jpp-features" value="" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the all features activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-complete-variant">
+
+		<property name="project.name" value="argouml-complete-variant" />
+		<property name="jpp-features" value="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}COLLABORATIONDIAGRAM=on${line.separator}DEPLOYMENTDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the Sequence and UseCase features activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-sequence-usecase-variant">
+
+		<property name="project.name" value="argouml-sequence-usecase-variant" />
+		<property name="jpp-features" value="SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the usecase feature.     -->
+	<!-- ====================================================== -->
+	<target name="generate-usecase-variant">
+
+		<property name="project.name" value="argouml-usecase-variant" />
+		<property name="jpp-features" value="USECASEDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the activity feature. -->
+	<!-- ====================================================== -->
+	<target name="generate-activity-variant">
+
+		<property name="project.name" value="argouml-activity-variant" />
+		<property name="jpp-features" value="ACTIVITYDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the cognitive feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-cognitive-variant">
+
+		<property name="project.name" value="argouml-cognitive-variant" />
+		<property name="jpp-features" value="COGNITIVE=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the logging feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-logging-variant">
+
+		<property name="project.name" value="argouml-logging-variant" />
+		<property name="jpp-features" value="LOGGING=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the activity diagram feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-state-variant">
+
+		<property name="project.name" value="argouml-state-variant" />
+		<property name="jpp-features" value="STATEDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the sequence diagram feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-sequence-variant">
+
+		<property name="project.name" value="argouml-sequence-variant" />
+		<property name="jpp-features" value="SEQUENCEDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the collaboration diagram feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-collaboration-variant">
+
+		<property name="project.name" value="argouml-collaboration-variant" />
+		<property name="jpp-features" value="COLLABORATIONDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate ArgoUML variant with the deployment diagram feature activated. -->
+	<!-- ====================================================== -->
+	<target name="generate-deployment-variant">
+
+		<property name="project.name" value="argouml-deployment-variant" />
+		<property name="jpp-features" value="DEPLOYMENTDIAGRAM=on" />
+
+		<prepare-eclipse-project project.name="${project.name}" />
+		<generate-variant-code project.name="${project.name}" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Generate the ArgoUML Variant                           -->
+	<!-- code by executing the preprocessor with the            -->
+	<!-- variant project as target.                             -->
+	<!-- ====================================================== -->
+	<macrodef name="generate-variant-code">
+		<attribute name="project.name" />
+		<sequential>
+
+			<!-- Modify jpp-features file to select properties -->
+			<echo>Modify jpp-features.properties to reflect selected properties</echo>
+			<copy todir="../argouml-build/" file="templates/jpp-features.properties" overwrite="true">
+				<filterset>
+					<filter token="JPP-FEATURES" value="${jpp-features}" />
+				</filterset>
+			</copy>
+
+			<!-- Clean all staging dirs for the preprocessor to make it generate new versions -->
+			<ant dir="../argouml-build" inheritAll="false" target="jpp-clean"/>
+
+			<!-- Preprocess all subprojects -->
+			<ant dir="../argouml-build" inheritAll="false" target="jpp-preprocess"/>
+
+			<!-- Copy all preprocessed files into destination project -->
+			<echo>Consolidate preprocessed files into target project</echo>
+			<copy todir="../@{project.name}/src">
+				<fileset dir="../argouml-app/staging/" />
+				<fileset dir="../argouml-core-diagrams-sequence2/staging/" />
+				<fileset dir="../argouml-core-model/staging/" />
+				<fileset dir="../argouml-core-model-euml/staging/" />
+				<fileset dir="../argouml-core-model-mdr/staging/" />
+				<fileset dir="../argouml-core-model-mdr/build/java/" />
+				<fileset dir="../argouml-core-model-mdr/src" >
+					<include name="org/argouml/model/mdr/conversions/*" />
+					<include name="org/argouml/model/mdr/mof/*" />
+				</fileset>
+				<fileset dir="../argouml-core-model-euml/src" >
+					<include name="org/argouml/model/metamodels/uml211/*" />
+				</fileset>
+			</copy>
+
+			<!-- Copy non java files -->
+			<echo>Copy in non java files</echo>
+			<copy todir="../@{project.name}">
+				<fileset dir="../argouml-app/">
+					<include name="src/org/argouml/*" />
+					<include name="src/org/argouml/i18n/**" />
+					<include name="src/org/argouml/Images/**" />
+					<include name="src/org/argouml/profile/profiles/uml14/**" />
+					<include name="src/org/argouml/resource/**" />
+					<include name="src/templates/**" />
+					<include name="tests/**" />
+					<!--<include name="META-INF/**" />-->
+					<include name="*.properties" />
+					<!--<include name="*.launch" />-->
+					<include name="build.xml" />
+				</fileset>
+			</copy>
+
+			<!-- Consolidate libraries into target project -->
+			<copy todir="../@{project.name}/lib">
+				<fileset dir="../argouml-core-model-euml/lib/">
+					<include name="**/*" />
+				</fileset>
+				<fileset dir="../argouml-core-model-mdr/lib/" />
+			</copy>
+
+			<!-- Copy in and complete launch file template -->
+			<copy tofile="../@{project.name}/@{project.name}.launch" file="templates/launch-file.xml">
+				<filterset>
+					<filter token="PROJECT-NAME" value="${project.name}" />
+				</filterset>
+			</copy>
+
+			<!-- filter empty java files to prevent problems in the downstream processing -->
+			<!-- removes all files smaller then 4 bytes -->
+			<echo>Filter empty java files</echo>
+			<delete verbose="true">
+				<fileset dir="../@{project.name}/src/" casesensitive="yes">
+					<include name="**/*.java" />
+					<size value="4" when="less" />
+				</fileset>
+			</delete>
+
+			<!-- filter empty directories in the source directory -->
+			<!-- to prevent problems in the downstream processing -->
+			<echo>Filter empty source directories</echo>
+			<delete includeemptydirs="true" verbose="true">
+			  <fileset dir="../@{project.name}/src/"  >
+			    <and>
+			      <size value="0"/>
+			      <type type="dir"/>
+			     </and>
+			  </fileset>
+			</delete>
+
+		</sequential>
+	</macrodef>
+
+	<!-- ====================================================== -->
+	<!-- Prepare the eclipse project for an ArgoUML variant.    -->
+	<!-- ====================================================== -->
+	<macrodef name="prepare-eclipse-project">
+		<attribute name="project.name" />
+		<sequential>
+			<echo>Prepare Project: @{project.name}</echo>
+			<mkdir dir="../@{project.name}" />
+			<mkdir dir="../@{project.name}/src" />
+			<mkdir dir="../@{project.name}/bin" />
+			<mkdir dir="../@{project.name}/lib" />
+			<copy file="templates/project-file.xml" tofile="../@{project.name}/.project" />
+			<replace file="../@{project.name}/.project" token="[project.name]" value="@{project.name}" />
+			<copy file="templates/classpath-file.xml" tofile="../@{project.name}/.classpath" />
+			<copy file="templates/build.properties" tofile="../@{project.name}/build.properties" />
+			<copy file="templates/MANIFEST.MF" tofile="../@{project.name}/META-INF/MANIFEST.MF" />
+			<copy todir="../@{project.name}/lib/">
+				<fileset dir="../argouml-app/lib" />
+				<fileset dir="lib" />
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<!-- ====================================================== -->
+	<!-- Clean the basic variant.                               -->
+	<!-- ====================================================== -->
+	<target name="clean-basic-variant">
+		<clean-variant-folder project.name="argouml-basic-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the complete variant.                            -->
+	<!-- ====================================================== -->
+	<target name="clean-complete-variant">
+		<clean-variant-folder project.name="argouml-complete-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the sequence-usecase variant.                            -->
+	<!-- ====================================================== -->
+	<target name="clean-sequence-usecase-variant">
+		<clean-variant-folder project.name="argouml-sequence-usecase-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the usecase variant.                             -->
+	<!-- ====================================================== -->
+	<target name="clean-usecase-variant">
+		<clean-variant-folder project.name="argouml-usecase-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the activity variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-activity-variant">
+		<clean-variant-folder project.name="argouml-activity-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the cognitive variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-cognitive-variant">
+		<clean-variant-folder project.name="argouml-cognitive-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the logging variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-logging-variant">
+		<clean-variant-folder project.name="argouml-logging-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the state variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-state-variant">
+		<clean-variant-folder project.name="argouml-state-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the sequence variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-sequence-variant">
+		<clean-variant-folder project.name="argouml-sequence-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the collaboration variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-collaboration-variant">
+		<clean-variant-folder project.name="argouml-collaboration-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the deployment variant.                           -->
+	<!-- ====================================================== -->
+	<target name="clean-deployment-variant">
+		<clean-variant-folder project.name="argouml-deployment-variant" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean the folder of a specific variant.                -->
+	<!-- ====================================================== -->
+	<macrodef name="clean-variant-folder">
+		<attribute name="project.name" />
+		<sequential>
+			<echo>Removing variant @{project.name}</echo>
+			<delete includeemptydirs="true" verbose="true" failonerror="false">
+				<fileset dir="../@{project.name}" />
+			</delete>
+		</sequential>
+	</macrodef>
+
+</project>
+<!-- End of file -->
