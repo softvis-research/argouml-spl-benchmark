@@ -1,0 +1,8 @@
+<project basedir="../../../org.splevo.casestudy.argoumlspl.generator" default="generateScenario" name="Scenario generator">
+<include file="../../../org.splevo.casestudy.argoumlspl.generator/build.xml"/>
+<include file="../build.xml"/>
+<target name="generateScenario">
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioRandom002Variants/variants/00001.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}COLLABORATIONDIAGRAM=on${line.separator}DEPLOYMENTDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioRandom002Variants/variants/00002.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}COLLABORATIONDIAGRAM=on${line.separator}DEPLOYMENTDIAGRAM=on${line.separator}" />
+</target>
+</project>

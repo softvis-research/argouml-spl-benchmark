@@ -1,0 +1,56 @@
+<project basedir="../../../org.splevo.casestudy.argoumlspl.generator" default="generateScenario" name="Scenario generator">
+<include file="../../../org.splevo.casestudy.argoumlspl.generator/build.xml"/>
+<include file="../build.xml"/>
+<target name="generateScenario">
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00001.config" jpp-features="" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00002.config" jpp-features="COGNITIVE=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00003.config" jpp-features="LOGGING=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00004.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00005.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00006.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00007.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00008.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00009.config" jpp-features="STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00010.config" jpp-features="COGNITIVE=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00011.config" jpp-features="LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00012.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00013.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00014.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00015.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00016.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00017.config" jpp-features="SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00018.config" jpp-features="COGNITIVE=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00019.config" jpp-features="LOGGING=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00020.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00021.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00022.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00023.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00024.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00025.config" jpp-features="STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00026.config" jpp-features="COGNITIVE=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00027.config" jpp-features="LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00028.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00029.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00030.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00031.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00032.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00033.config" jpp-features="USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00034.config" jpp-features="COGNITIVE=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00035.config" jpp-features="LOGGING=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00036.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00037.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00038.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00039.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00040.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00041.config" jpp-features="STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00042.config" jpp-features="COGNITIVE=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00043.config" jpp-features="LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00044.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00045.config" jpp-features="ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00046.config" jpp-features="COGNITIVE=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00047.config" jpp-features="LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00048.config" jpp-features="COGNITIVE=on${line.separator}LOGGING=on${line.separator}ACTIVITYDIAGRAM=on${line.separator}STATEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00049.config" jpp-features="SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+	<generate-variant project.path="ArgoUMLSPLBenchmark/scenarios/ScenarioAllVariants/variants/00050.config" jpp-features="COGNITIVE=on${line.separator}SEQUENCEDIAGRAM=on${line.separator}USECASEDIAGRAM=on${line.separator}" />
+</target>
+</project>

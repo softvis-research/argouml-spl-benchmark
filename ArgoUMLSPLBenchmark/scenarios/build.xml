@@ -1,0 +1,205 @@
+<project basedir="." name="ArgoUML-SPL Scenarios">
+	
+	<target name="generate-scenario-pair-wise-variants">
+		<echo>ScenarioPairWiseVariants</echo>
+		<ant antfile="build.xml" dir="ScenarioPairWiseVariants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-all-variants">
+		<echo>ScenarioAllVariants</echo>
+		<ant antfile="build_part1.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+		<ant antfile="build_part2.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+		<ant antfile="build_part3.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+		<ant antfile="build_part4.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+		<ant antfile="build_part5.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+		<ant antfile="build_part6.xml" dir="ScenarioAllVariants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-original-variant">
+		<echo>ScenarioOriginalVariant</echo>
+		<ant antfile="build.xml" dir="ScenarioOriginalVariant" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-traditional-variants">
+		<echo>ScenarioTraditionalVariants</echo>
+		<ant antfile="build.xml" dir="ScenarioTraditionalVariants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-2-variants">
+		<echo>ScenarioRandom002Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom002Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-3-variants">
+		<echo>ScenarioRandom003Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom003Variants" useNativeBasedir="true"/>
+	</target>
+			
+	<target name="generate-scenario-random-4-variants">
+		<echo>ScenarioRandom004Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom004Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-5-variants">
+		<echo>ScenarioRandom005Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom005Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-6-variants">
+		<echo>ScenarioRandom006Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom006Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-7-variants">
+		<echo>ScenarioRandom007Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom007Variants" useNativeBasedir="true"/>
+	</target>
+			
+	<target name="generate-scenario-random-8-variants">
+		<echo>ScenarioRandom008Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom008Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-9-variants">
+		<echo>ScenarioRandom009Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom009Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-10-variants">
+		<echo>ScenarioRandom010Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom010Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-50-variants">
+		<echo>ScenarioRandom050Variants</echo>
+		<ant antfile="build.xml" dir="ScenarioRandom050Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<target name="generate-scenario-random-100-variants">
+		<echo>ScenarioRandom100Variants</echo>
+		<ant antfile="build_part1.xml" dir="ScenarioRandom100Variants" useNativeBasedir="true"/>
+		<ant antfile="build_part2.xml" dir="ScenarioRandom100Variants" useNativeBasedir="true"/>
+	</target>
+	
+	<macrodef name="generate-variant">
+		<attribute name="project.path" />
+		<attribute name="jpp-features" />
+		<sequential>
+			<prepare-eclipse-project project.name="@{project.path}" />
+			<generate-variant-code2 project.path="@{project.path}" jpp-features="@{jpp-features}" />
+		</sequential>
+	</macrodef>
+	
+	<!-- A small modification of the macrodef generate-variant-code from SPLevo to
+	1) allow to set the features as parameter (property is not mutable in ant),
+	2) allow to use paths in project.path (e.g., a/b/c) where c is the project name,
+	3) remove the LPS annotations related to variability granularity added in ArgoUML SPL
+	Copy-paste-modified here to avoid to modify SPLevo project -->
+	<macrodef name="generate-variant-code2">
+		<attribute name="project.path" />
+		<attribute name="jpp-features" />
+		<sequential>
+			<local name="project.name"/>
+			<basename property="project.name" file="@{project.path}"/>
+			<echo message="${project.name}"/>
+			
+			<!-- .project does not allow to have paths, it should be just the project name -->
+			<replace file="../@{project.path}/.project" token="@{project.path}" value="${project.name}" />
+			
+			<!-- Modify jpp-features file to select properties -->
+			<echo>Modify jpp-features.properties to reflect selected properties</echo>
+			<copy todir="../argouml-build/" file="templates/jpp-features.properties" overwrite="true">
+				<filterset>
+					<filter token="JPP-FEATURES" value="@{jpp-features}" />
+				</filterset>
+			</copy>
+
+			<!-- Clean all staging dirs for the preprocessor to make it generate new versions -->
+			<ant dir="../argouml-build" inheritAll="false" target="jpp-clean"/>
+
+			<!-- Preprocess all subprojects -->
+			<ant dir="../argouml-build" inheritAll="false" target="jpp-preprocess"/>
+
+			<!-- Copy all preprocessed files into destination project -->
+			<echo>Consolidate preprocessed files into target project</echo>
+			<copy todir="../@{project.path}/src">
+				<!-- Remove comments linked to variability -->
+				<filterchain>
+					<linecontains negate="true">
+					<contains value="@#$LPS"/>
+					</linecontains>
+				</filterchain>
+				<fileset dir="../argouml-app/staging/" />
+				<fileset dir="../argouml-core-diagrams-sequence2/staging/" />
+				<fileset dir="../argouml-core-model/staging/" />
+				<fileset dir="../argouml-core-model-euml/staging/" />
+				<fileset dir="../argouml-core-model-mdr/staging/" />
+				<fileset dir="../argouml-core-model-mdr/build/java/" />
+				<fileset dir="../argouml-core-model-mdr/src" >
+					<include name="org/argouml/model/mdr/conversions/*" />
+					<include name="org/argouml/model/mdr/mof/*" />
+				</fileset>
+				<fileset dir="../argouml-core-model-euml/src" >
+					<include name="org/argouml/model/metamodels/uml211/*" />
+				</fileset>
+			</copy>
+
+			<!-- Copy non java files -->
+			<echo>Copy in non java files</echo>
+			<copy todir="../@{project.path}">
+				<fileset dir="../argouml-app/">
+					<include name="src/org/argouml/*" />
+					<include name="src/org/argouml/i18n/**" />
+					<include name="src/org/argouml/Images/**" />
+					<include name="src/org/argouml/profile/profiles/uml14/**" />
+					<include name="src/org/argouml/resource/**" />
+					<include name="src/templates/**" />
+					<include name="tests/**" />
+					<!--<include name="META-INF/**" />-->
+					<include name="*.properties" />
+					<!--<include name="*.launch" />-->
+					<include name="build.xml" />
+				</fileset>
+			</copy>
+
+			<!-- Consolidate libraries into target project -->
+			<copy todir="../@{project.path}/lib">
+				<fileset dir="../argouml-core-model-euml/lib/">
+					<include name="**/*" />
+				</fileset>
+				<fileset dir="../argouml-core-model-mdr/lib/" />
+			</copy>
+
+			<!-- Copy in and complete launch file template -->
+			<copy tofile="../@{project.path}/ArgoUML.launch" file="templates/launch-file.xml">
+				<filterset>
+					<filter token="PROJECT-NAME" value="${project.name}" />
+				</filterset>
+			</copy>
+
+			<!-- filter empty java files to prevent problems in the downstream processing -->
+			<!-- removes all files smaller then 4 bytes -->
+			<echo>Filter empty java files</echo>
+			<delete verbose="true">
+				<fileset dir="../@{project.path}/src/" casesensitive="yes">
+					<include name="**/*.java" />
+					<size value="4" when="less" />
+				</fileset>
+			</delete>
+
+			<!-- filter empty directories in the source directory -->
+			<!-- to prevent problems in the downstream processing -->
+			<echo>Filter empty source directories</echo>
+			<delete includeemptydirs="true" verbose="true">
+			  <fileset dir="../@{project.path}/src/"  >
+			    <and>
+			      <size value="0"/>
+			      <type type="dir"/>
+			     </and>
+			  </fileset>
+			</delete>
+
+		</sequential>
+	</macrodef>
+			
+</project>
