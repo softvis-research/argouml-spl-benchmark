@@ -63,9 +63,11 @@ We separated it in parts to try to avoid memory problems.
 
 Troubleshooting (Out of memory error): You might have an out of memory error after the generation of several variants. It happens in a laptop after more than 170 generated variants.
 
+```
 BUILD FAILED
 [...] java.lang.OutOfMemoryError: Compressed class space
 Total time: 503 minutes 42 seconds
+```
 
 We suggest to launch the build.xml of an scenario and then restart Eclipse. It is also important, if a build fail, remove the variants folder of the scenario just to prevent that there are incomplete variants when the build failed.
 
@@ -75,8 +77,7 @@ This section explains what you need to do to use your feature location technique
 
 * featuresInfo: It contains a features.txt file with the feature ids, feature names (separated by comma as there are synonyms or alternative namings) and the description. Id, names and description are separated by the symbol “;”.
 You might want to use the information there to create queries for feature location techniques based on information retrieval.
-scenarios: The benchmark predefined scenarios, you should provide the results for each of them. In each scenario you have the “variants” folder  with the source code of each variant (now that you have created the scenarios) and a “configs” folder where you have information of the features present in each variant.
-You might want to use the information in the configs folder for intersection-based techniques.
+scenarios: The benchmark predefined scenarios, you should provide the results for each of them. In each scenario you have the “variants” folder with the source code of each variant (now that you have created the scenarios) and a “configs” folder where you have information of the features present in each variant. You might want to use the information in the configs folder for intersection-based techniques. In the featuresInfo there is also the featureModel.txt which is a simple textual representation of the feature model of ArgoUML SPL using the feature ids.
 
 * groundTruth: A set of 24 txt files containing the traces of the feature, feature combinations and feature negations of ArgoUML SPL.
 Obviously, you cannot use this ground-truth information inside your feature location technique.
@@ -96,13 +97,12 @@ In the case of your feature location technique, the results will be the ones cre
 
 Then, we launch the program to get the metrics. It is in the src/metricsCalculation package. Right click the java file, Run as -> Java application.
 
-You can see the progress in the console
+You can see the progress in the console.
 
-Then, refresh “yourResultsMetrics” and you will have this csv file with all the metrics
+Then, refresh “yourResultsMetrics” and you will have this csv file with all the metrics.
 
-In the console output you have also a gnuplot script that you can copy and paste in gnuplot.
-http://www.gnuplot.info/download.html
-Tested with gnuplot 5.2
+In the console output you have also a gnuplot script that you can copy and paste in gnuplot. You can download gnuplot here: http://www.gnuplot.info/download.html (Tested with gnuplot 5.2).
+
 And then click enter and you have the graph below. You can use as example to graphically report the metrics of a given scenario.
 
 
@@ -115,14 +115,15 @@ TraceIdUtils can be helpful to create the id of the traces needed for “yourRes
 
 Finally, FileUtils has standard helpful methods to manipulate files, write in files etc.
 
-## Launching a variant (if you want to do it for some reason)
+## Launching an ArgoUML variant (if you want to do it for some reason)
 
 If for some reason you want to launch a specific variant: in Eclipse, File -> import -> existing projects and select the folder of the generated variant. Now you will have this variant as an Eclipse project. Then, right click the file ArgoUML.launch that exists in the variant and click on Run as -> ArgoUML. The ArgoUML will be executed.
 
-Troubleshooting (ArgoUML variant is not launching)
-If it is not executed and you have an error in the Eclipse console
+Troubleshooting (ArgoUML variant is not launching). If it is not executed and you have an error in the Eclipse console
 
+```
 [...] java.lang.Error: Unresolved compilation problem.
+```
 
 you should set java compiler compatibility with Java 1.6. For this, right click the imported project -> Properties -> Java Compiler and set the Compiler compliance level to 1.6.
 
