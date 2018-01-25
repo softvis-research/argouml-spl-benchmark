@@ -3,6 +3,9 @@
 # ArgoUML SPL Benchmark
 A feature location benchmark for single systems and for families of systems. We include the ground-truth, different scenarios and a program to calculate the feature location metrics.
 
+Read the description of the benchmark in: _J. Martinez, N. Ordoñez, X. Tërnava, T. Ziadi, J. Aponte, E. Figueiredo and M. T. Valente._
+**Feature Location Benchmark with ArgoUML SPL**. SPLC 2018 Challenges Track, Gothenburg, Sweden, 10-14 Sept
+
 ## Setting-up
 1. Download this repository by clicking here https://github.com/but4reuse/argouml-spl-benchmark/archive/master.zip and unzip it somewhere in your computer.
 
@@ -96,15 +99,15 @@ We suggest to launch the build.xml of an scenario and then restart Eclipse. It i
 
 This section explains what you need to do to use your feature location technique in this  benchmark. There are some important folders in the ArgoUMLSPLBenchmark project that you need to know:
 
-* featuresInfo: It contains a features.txt file with the feature ids, feature names (separated by comma as there are synonyms or alternative namings) and the description. Id, names and description are separated by the symbol “;”.
+* **featuresInfo**: It contains a features.txt file with the feature ids, feature names (separated by comma as there are synonyms or alternative namings) and the description. Id, names and description are separated by the symbol “;”.
 You might want to use the information there to create queries for feature location techniques based on information retrieval.
 scenarios: The benchmark predefined scenarios, you should provide the results for each of them. In each scenario you have the “variants” folder with the source code of each variant (now that you have created the scenarios) and a “configs” folder where you have information of the features present in each variant. You might want to use the information in the configs folder for intersection-based techniques. In the featuresInfo there is also the featureModel.txt which is a simple textual representation of the feature model of ArgoUML SPL using the feature ids.
 
-* groundTruth: A set of 24 txt files containing the traces of the feature, feature combinations and feature negations of ArgoUML SPL.
+* **groundTruth**: A set of 24 txt files containing the traces of the feature, feature combinations and feature negations of ArgoUML SPL.
 Obviously, you cannot use this ground-truth information inside your feature location technique.
 yourResults: This is the folder where you need to put your results (either manually or automatically, as you prefer). The results must be in the same format as the ground-truth.
 
-* yourResultsMetrics: Once you put your results in the “yourResults” folder, you can launch the metrics calculation program to get a csv file in this “yourResultsMetrics” folder. We will show how in the next sections.
+* **yourResultsMetrics**: Once you put your results in the “yourResults” folder, you can launch the metrics calculation program to get a csv file in this “yourResultsMetrics” folder. We will show how in the next sections.
 
 ## A complete example showing the whole process
 We have prepared an example of a feature location technique to show you the process. This technique will output the results in the “yourResults” folder as the benchmark is expecting. Remember that you can do this automatically, or you can just put the results there manually.
