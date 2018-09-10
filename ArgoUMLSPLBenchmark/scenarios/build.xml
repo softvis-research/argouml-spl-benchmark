@@ -94,7 +94,8 @@
 	1) allow to set the features as parameter (property is not mutable in ant),
 	2) allow to use paths in project.path (e.g., a/b/c) where c is the project name,
 	3) remove the LPS annotations related to variability granularity added in ArgoUML SPL
-	Copy-paste-modified here to avoid to modify SPLevo project -->
+	Copy-paste-modified here to avoid to modify SPLevo project
+	4) Exclude the file argouml-core-model-mdr\build\java\readme-build-java.txt which was artificially created as the folder build\java must exist -->
 	<macrodef name="generate-variant-code2">
 		<attribute name="project.path" />
 		<attribute name="jpp-features" />
@@ -134,7 +135,9 @@
 				<fileset dir="../argouml-core-model/staging/" />
 				<fileset dir="../argouml-core-model-euml/staging/" />
 				<fileset dir="../argouml-core-model-mdr/staging/" />
-				<fileset dir="../argouml-core-model-mdr/build/java/" />
+				<fileset dir="../argouml-core-model-mdr/build/java/" >
+					<exclude name="readme-build-java.txt" />
+				</fileset>
 				<fileset dir="../argouml-core-model-mdr/src" >
 					<include name="org/argouml/model/mdr/conversions/*" />
 					<include name="org/argouml/model/mdr/mof/*" />
