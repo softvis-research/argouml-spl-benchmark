@@ -114,7 +114,7 @@ yourResults: This is the folder where you need to put your results (either manua
 * **yourResultsMetrics**: Once you put your results in the “yourResults” folder, you can launch the metrics calculation program to get a csv file in this “yourResultsMetrics” folder. We will show how in the next sections.
 
 ## A complete example showing the whole process
-We have prepared an example of a feature location technique to show you the process. This technique will output the results in the “yourResults” folder as the benchmark is expecting. Remember that you can do this automatically, or you can just put the results there manually.
+We have prepared an example of a feature location technique to show you the process. Before starting the example, create the  scenario ScenarioTraditionalVariants as described in the instructions to build the scenarios. The feature location technique that we provide as a very basic example will output the results in the “yourResults” folder as the benchmark is expecting. Remember that you can do this automatically, or you can just put the results there manually.
 The technique is in the ArgoUMLSPLBenchmark project, in the src/techniqueExample package. Right click the java class there -> Run as -> Java Application
 
 <img align="middle" src="https://github.com/but4reuse/argouml-spl-benchmark/raw/master/README_images/image7.png"></center>
