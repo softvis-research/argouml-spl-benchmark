@@ -38,7 +38,7 @@ From the list select exactly these projects (Selecting others can cause problems
 * argouml-core-infra
 * argouml-core-model
 * argouml-core-model-euml
-* argouml-core-model-mdf
+* argouml-core-model-mdr
 * argouml-core-tools
 * ArgoUMLSPLBenchmark
 * org.splevo.casestudy.argoumlspl.generator
