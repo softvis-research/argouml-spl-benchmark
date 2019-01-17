@@ -135,13 +135,13 @@ public class MetricsCalculation {
 			}
 		}
 
-		resultsContent.append("Global results,");
+		resultsContent.append("Average,");
 		// precision avg.
-		precisionAvg = precisionAvg / (numberOfActualFiles - failedToRetrieve_counter);
+		precisionAvg = precisionAvg / numberOfActualFiles;
 		if(Double.isNaN(precisionAvg)){
 			resultsContent.append("0,");
 		} else {
-			resultsContent.append(precisionAvg / (numberOfActualFiles - failedToRetrieve_counter) + ",");
+			resultsContent.append(precisionAvg + ",");
 		}
 		
 		// recall avg.
@@ -149,11 +149,11 @@ public class MetricsCalculation {
 		if(Double.isNaN(recallAvg)){
 			resultsContent.append("0,");
 		} else {
-			resultsContent.append(recallAvg / numberOfActualFiles + ",");
+			resultsContent.append(recallAvg + ",");
 		}
 		
 		// f1score avg.
-		f1measureAvg = f1measureAvg / (numberOfActualFiles - failedToRetrieve_counter);
+		f1measureAvg = f1measureAvg / numberOfActualFiles;
 		if(Double.isNaN(f1measureAvg)){
 			resultsContent.append("0,");
 		} else {
