@@ -19,7 +19,7 @@ Download Eclipse from https://www.eclipse.org/downloads/ (We tested with Eclipse
 
 And then, select the Java Developers package. This package will have everything you need, if you select another, or you want to use one Eclipse that you have in your computer, you might have problems.
 
-You will also need to have java installed in your computer (at least Java 1.6). You can check it opening the Command Prompt (cmd) and entering “java -version”
+You will also need to have Java installed in your computer (at least Java 1.6). You can check it opening the Command Prompt (cmd) and entering “java -version” (as shown in the next image). You need to have a Java Development Kit (JDK) installed, and not just the Java Runtime Environment (JRE), otherwise you will have errors during the build (for example "tools.jar not found"). Also, check that an environment variable called JAVA_HOME is defined in your system pointing to the JDK path. For example JAVA_HOME=D:\jdk1.8
 
 <img align="middle" src="https://github.com/but4reuse/argouml-spl-benchmark/raw/master/README_images/image13.png"></center>
 
