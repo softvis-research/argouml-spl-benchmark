@@ -25,12 +25,23 @@ import utils.TraceIdUtils;
  */
 public class ExampleFeatureLocationTechnique {
 
+	// Modify with the selected scenario. Traditional scenario by default.
+	private static final String SELECTED_SCENARIO_PATH = "scenarios/ScenarioTraditionalVariants";
+
 	public static void main(String[] args) {
+
+		// Check
+		File variantsFolder = new File(SELECTED_SCENARIO_PATH, "variants");
+		if (!variantsFolder.exists()) {
+			System.err.println("The variants folder does not exist yet at " + SELECTED_SCENARIO_PATH
+					+ "\nYou should build the scenario before. Use the Ant scripts in the scenario folder.");
+			return;
+		}
 
 		long start = System.currentTimeMillis();
 
 		// Utils for information about features and configurations
-		FeatureUtils utils = new FeatureUtils("scenarios/ScenarioTraditionalVariants");
+		FeatureUtils utils = new FeatureUtils(SELECTED_SCENARIO_PATH);
 
 		// Scenario in the console
 		System.out.println("Trying to locate: " + utils.getFeatureIds());

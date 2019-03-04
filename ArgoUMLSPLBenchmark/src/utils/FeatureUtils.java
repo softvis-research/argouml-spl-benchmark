@@ -28,9 +28,9 @@ public class FeatureUtils {
 	/**
 	 * We get all the info in the constructor
 	 * 
-	 * @param scenarioFolderAbsolutePath
+	 * @param scenarioFolderPath
 	 */
-	public FeatureUtils(String scenarioFolderAbsolutePath) {
+	public FeatureUtils(String scenarioFolderPath) {
 
 		// Get features information
 		List<String> lines = FileUtils.getLinesOfFile(new File("featuresInfo/features.txt"));
@@ -49,9 +49,9 @@ public class FeatureUtils {
 		}
 
 		// Get configurations information
-		File scenarioFolder = new File(scenarioFolderAbsolutePath);
+		File scenarioFolder = new File(scenarioFolderPath);
 		if (!scenarioFolder.exists()) {
-			System.err.println(scenarioFolderAbsolutePath + " does not exist");
+			System.err.println(scenarioFolderPath + " does not exist");
 			return;
 		}
 		File configsFolder = new File(scenarioFolder, "configs");
