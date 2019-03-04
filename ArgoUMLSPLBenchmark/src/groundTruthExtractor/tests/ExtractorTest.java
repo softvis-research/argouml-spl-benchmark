@@ -33,6 +33,18 @@ public class ExtractorTest {
 		Assert.assertNotNull(a);
 		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
 	}
+	
+	@Test
+	public void simpleVariousMethods() {
+		File f = new File("tests/groundTruthExtractor/SimpleVariousMethods.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
+		a = result.get("FEATUREB");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SimpleTestMethod doAnotherThing()", a.get(0));
+	}
 
 	@Test
 	public void nestedTest() {

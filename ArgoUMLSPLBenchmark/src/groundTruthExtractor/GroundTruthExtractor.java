@@ -28,6 +28,7 @@ import utils.TraceIdUtils;
 
 /**
  * Extracting the ground truth from the jpp annotations
+ * http://www.slashdev.ca/javapp/
  * 
  * @author jabier.martinez
  */
@@ -61,43 +62,82 @@ public class GroundTruthExtractor {
 			return;
 		}
 
-		// clean groundTruth folder
-		System.out.println("Cleaning");
-		File groundTruthFolder = new File("groundTruth");
-		for (File f1 : groundTruthFolder.listFiles()) {
-			if (f1.getName().endsWith(".txt")) {
-				System.out.println("Deleting " + f1.getAbsolutePath());
-				f1.delete();
+		// the argoUML SPL projects must be imported in the workspace in the same parent
+		// folder of this ArgoUMLSPLBenchmark project
+		File argoUMLSPLContainingFolder = new File("../");
+
+		// get all relevant Java files
+		List<File> javaFiles = getAllArgoUMLSPLRelevantJavaFiles(argoUMLSPLContainingFolder);
+
+		extractGroundTruth(javaFiles, new File("groundTruth"));
+	}
+
+	/**
+	 * Get all the Java files of the ArgoUMLSPL projects that can contain
+	 * variability annotations
+	 * 
+	 * @param argoUMLSPLContainingFolder
+	 * @return the list of Java files
+	 */
+	public static List<File> getAllArgoUMLSPLRelevantJavaFiles(File argoUMLSPLContainingFolder) {
+		// Go through all files of ArgoUML
+		List<File> argoUMLProjects = new ArrayList<File>();
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-app"));
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-core-diagrams-sequence2"));
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-core-infra"));
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-core-model"));
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-core-model-euml"));
+		argoUMLProjects.add(new File(argoUMLSPLContainingFolder, "argouml-core-model-mdr"));
+		// argouml-core-tools does not contain jpp annotations
+		// argoUMLProjects.add(new File("argoUMLSPLContainingFolder,
+		// "argouml-core-tools"));
+		List<File> javaFiles = new ArrayList<File>();
+		for (File project : argoUMLProjects) {
+			List<File> files = FileUtils.getAllJavaFilesIgnoringStagingFolder(project);
+			javaFiles.addAll(files);
+		}
+		return javaFiles;
+	}
+
+	/**
+	 * Extract groundTruth
+	 * 
+	 * @param allJavaFiles
+	 *            files with java extension
+	 * @param outputFolder
+	 *            for the txt files of the groundtruth
+	 */
+	public static void extractGroundTruth(List<File> allJavaFiles, File outputFolder) {
+
+		if (!outputFolder.exists()) {
+			outputFolder.mkdirs();
+		} else {
+			// clean groundTruth folder
+			System.out.println("Cleaning " + outputFolder.getAbsolutePath());
+			for (File f1 : outputFolder.listFiles()) {
+				if (f1.getName().endsWith(".txt")) {
+					System.out.println("Deleting " + f1.getAbsolutePath());
+					f1.delete();
+				}
 			}
 		}
 
-		// Go through all files of ArgoUML
-		List<File> argoUMLProjects = new ArrayList<File>();
-		argoUMLProjects.add(new File("../argouml-app"));
-		argoUMLProjects.add(new File("../argouml-core-diagrams-sequence2"));
-		argoUMLProjects.add(new File("../argouml-core-infra"));
-		argoUMLProjects.add(new File("../argouml-core-model"));
-		argoUMLProjects.add(new File("../argouml-core-model-euml"));
-		argoUMLProjects.add(new File("../argouml-core-model-mdr"));
-		// argouml-core-tools does not contain jpp annotations
-		// argoUMLProjects.add(new File("../argouml-core-tools"));
-		for (File project : argoUMLProjects) {
-			List<File> files = FileUtils.getAllJavaFilesIgnoringStagingFolder(project);
-			for (File f : files) {
-				Map<String, List<String>> map = parseFile(f);
-				for (String feature : map.keySet()) {
-					File file = new File("groundTruth/" + feature + ".txt");
-					for (String id : map.get(feature)) {
-						try {
-							FileUtils.appendToFile(file, id);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+		System.out.println("Ground-truth extraction started");
+		for (File f : allJavaFiles) {
+			Map<String, List<String>> map = parseFile(f);
+			for (String feature : map.keySet()) {
+				File file = new File(outputFolder, feature + ".txt");
+				for (String id : map.get(feature)) {
+					try {
+						FileUtils.appendToFile(file, id);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
 		}
 		System.out.println("Ground-truth extraction finished");
+		System.out.println("Feature traces at " + outputFolder.getAbsolutePath());
 	}
 
 	/**
@@ -109,8 +149,7 @@ public class GroundTruthExtractor {
 	public static Map<String, List<String>> parseFile(File javaFile) {
 
 		// This is a stack because we can have #ifdefined(A) for the class and
-		// then
-		// #ifdefined(B) for the method
+		// then #ifdefined(B) for the method
 		// See for example org.argouml.sequence2.diagram.ActionAddClassifierRole
 		Stack<List<String>> currentBlockFeatures = new Stack<List<String>>();
 		Stack<Integer> currentBlockStart = new Stack<Integer>();
@@ -138,6 +177,12 @@ public class GroundTruthExtractor {
 		List<String> currentFeatures = new ArrayList<String>();
 		// Process the jpp comments
 		List<LineComment> jppComments = geJPPComments(cu, source);
+		// count CORE LoC when there are jppComments, use source, because
+		// cu.toString does not include comments
+		int coreLines = getLinesOfCode(source, true);
+		if (coreLines > 0) {
+			System.out.println("LoC_info;CORE;" + coreLines + ";" + javaFile.getName());
+		}
 		for (LineComment node : jppComments) {
 			int start = node.getStartPosition();
 			int end = start + node.getLength();
@@ -154,20 +199,26 @@ public class GroundTruthExtractor {
 					granularity = "Undefined";
 				}
 				System.out.println("Granularity: " + granularity);
-				System.out.println(blockText);
+				// System.out.println(blockText);
+
 				for (String feature : currentFeatures) {
 					try {
+						// print loc info, and then we print the id
+						System.out.print("LoC_info;" + feature + ";" + getLinesOfCode(blockText, false) + ";"
+								+ currentBlockFeatures + ";");
 						if (granularity.equals(GRANULARITY_PACKAGE) || granularity.equals(GRANULARITY_CLASS)) {
 							List<?> types = cu.types();
 							for (Object type : types) {
 								String id = TraceIdUtils.getId((TypeDeclaration) type);
 								addMapping(featureToImplementationMap, feature, id);
+								System.out.println(id);
 							}
 						} else if (granularity.equals(GRANULARITY_METHOD)) {
 							MethodDeclaration method = getWrappingMethod(methods, currentBlockStart.peek(), end);
 							if (method != null) {
 								String id = TraceIdUtils.getId(method);
 								addMapping(featureToImplementationMap, feature, id);
+								System.out.println(id);
 							} else {
 								System.err.println("Should not happen");
 							}
@@ -182,6 +233,7 @@ public class GroundTruthExtractor {
 									cuRefinements.add(feature + " " + id);
 									addMapping(featureToImplementationMap, feature, id);
 								}
+								System.out.println(id);
 							} else {
 								// it is somewhere in the class (import,
 								// variable etc.)
@@ -192,6 +244,7 @@ public class GroundTruthExtractor {
 										cuRefinements.add(feature + " " + id);
 										addMapping(featureToImplementationMap, feature, id);
 									}
+									System.out.println(id);
 								}
 							}
 						}
@@ -238,7 +291,8 @@ public class GroundTruthExtractor {
 	/**
 	 * Get all methods
 	 * 
-	 * @param cu
+	 * @param a
+	 *            compilation unit
 	 * @return list of methods
 	 */
 	public static List<MethodDeclaration> getMethods(CompilationUnit cu) {
@@ -279,8 +333,8 @@ public class GroundTruthExtractor {
 
 	/**
 	 * If we have more than one item in the stack it means that we had nested
-	 * #ifdefined. If peek is A, and then we had B as second item, the result
-	 * will be A_B
+	 * #ifdefined. If peek is A, and then we had B as second item, the result will
+	 * be A_B
 	 * 
 	 * @param currentBlockFeatures
 	 * @return the list of features
@@ -445,9 +499,50 @@ public class GroundTruthExtractor {
 			}
 		}
 		if (!blockText.startsWith(JPPELSE)) {
-			System.err.println("Granularity annotation not found:\n" + blockText);
+			System.err.println("Granularity annotation not found:\n" + blockText + "\n");
 		}
 		return null;
+	}
+
+	/**
+	 * Get lines of code, we ignore the lines inside other ifdefined that might
+	 * exist.
+	 * 
+	 * @param text
+	 * @param countCoreLines,
+	 *            true to count core lines, and false if it is a jppComment
+	 * @return the number of lines
+	 */
+	public static int getLinesOfCode(String text, boolean countCoreLines) {
+		String[] lines = text.split("\r\n|\r|\n");
+		int counter = 0;
+		int insideifdefined = 0;
+		for (int i = 0; i < lines.length; i++) {
+			String line = lines[i];
+			// remove whitespaces in the beginning of the string
+			line = line.trim();
+			// ignore empty lines
+			if (line.isEmpty()) {
+				continue;
+			}
+			// it is a jpp comment in the beginning
+			if (!countCoreLines && i == 0 && line.startsWith(JPPIFDEFINED)) {
+				continue;
+			}
+			if (line.startsWith(JPPIFDEFINED)) {
+				insideifdefined++;
+			}
+			if (line.startsWith(JPPENDIF)) {
+				insideifdefined--;
+			}
+			// ignore jpp comments and granularity comments
+			if (!line.startsWith(JPPCOMMENT) && !line.startsWith(GRANULARITY)) {
+				if (insideifdefined == 0) {
+					counter++;
+				}
+			}
+		}
+		return counter;
 	}
 
 }
