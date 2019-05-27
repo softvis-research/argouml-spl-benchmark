@@ -214,11 +214,13 @@ public class GroundTruthExtractor {
 								System.out.println(id);
 							}
 						} else if (granularity.equals(GRANULARITY_METHOD)) {
-							MethodDeclaration method = getWrappingMethod(methods, currentBlockStart.peek(), end);
-							if (method != null) {
-								String id = TraceIdUtils.getId(method);
-								addMapping(featureToImplementationMap, feature, id);
-								System.out.println(id);
+							List<MethodDeclaration> wrappingMethods = getWrappingMethods(methods, currentBlockStart.peek(), end);
+							if (!wrappingMethods.isEmpty()) {
+								for(MethodDeclaration method : wrappingMethods) {
+									String id = TraceIdUtils.getId(method);
+									addMapping(featureToImplementationMap, feature, id);
+									System.out.println(id);
+								}
 							} else {
 								System.err.println("Should not happen");
 							}
@@ -411,17 +413,18 @@ public class GroundTruthExtractor {
 	 * @param currentBlockEnd
 	 * @return methodDeclaration
 	 */
-	public static MethodDeclaration getWrappingMethod(List<MethodDeclaration> methods, int currentBlockStart,
+	public static List<MethodDeclaration> getWrappingMethods(List<MethodDeclaration> methods, int currentBlockStart,
 			int currentBlockEnd) {
+		List<MethodDeclaration> wrappingMethods = new ArrayList<MethodDeclaration>();
 		// currentBlock is a wrapper of the method
 		for (MethodDeclaration method : methods) {
 			if (currentBlockStart < method.getStartPosition()) {
 				if (currentBlockEnd > method.getStartPosition() + method.getLength()) {
-					return method;
+					wrappingMethods.add(method);
 				}
 			}
 		}
-		return null;
+		return wrappingMethods;
 	}
 
 	/**

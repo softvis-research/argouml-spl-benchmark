@@ -110,3 +110,4 @@ org.argouml.uml.ui.ElementPropPanelFactory getStateVertexPropPanel(Object) Refin
 org.argouml.uml.ui.UMLExpressionExpressionModel setExpression(Object) Refinement
 org.argouml.uml.ui.UMLTimeExpressionModel setExpression(Object) Refinement
 org.argouml.model.Model getActivityGraphsFactory()
+org.argouml.model.Model getActivityGraphsHelper()
