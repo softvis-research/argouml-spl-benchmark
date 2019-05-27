@@ -2,7 +2,7 @@
 package jab;
 
 // Example found in org.argouml.uml.diagram.activity.ui.UMLActivityDiagram
-public class SimpleVariousMethodsSameFeature {
+public class SimpleVariousMethodsSameNestedFeature {
     
     //#if defined(FEATUREB)
     //@#$LPS-FEATUREB:GranularityType:Method

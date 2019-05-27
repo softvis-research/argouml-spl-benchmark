@@ -112,9 +112,9 @@ public class ExtractorTest {
 		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
 		List<String> a = result.get("FEATUREA");
 		Assert.assertNotNull(a);
-		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
-		Assert.assertEquals("jab.SimpleTestMethod doSomethingElse()", a.get(1));
-		Assert.assertEquals("jab.SimpleTestMethod doAnotherThing()", a.get(2));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameFeature doSomething()", a.get(0));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameFeature doSomethingElse()", a.get(1));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameFeature doAnotherThing()", a.get(2));
 	}
 	
 	@Test
@@ -123,9 +123,18 @@ public class ExtractorTest {
 		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
 		List<String> a = result.get("FEATUREA_and_FEATUREB");
 		Assert.assertNotNull(a);
-		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
-		Assert.assertEquals("jab.SimpleTestMethod doSomethingElse()", a.get(1));
-		Assert.assertEquals("jab.SimpleTestMethod doAnotherThing()", a.get(2));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameNestedFeature doSomething()", a.get(0));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameNestedFeature doSomethingElse()", a.get(1));
+		Assert.assertEquals("jab.SimpleVariousMethodsSameNestedFeature doAnotherThing()", a.get(2));
+	}
+	
+	@Test
+	public void classWithInnerClass() {
+		File f = new File("tests/groundTruthExtractor/ClassWithInnerClass.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.ClassWithInnerClass.InnerClass doSomething()", a.get(0));
 	}
 	
 	// @Test
