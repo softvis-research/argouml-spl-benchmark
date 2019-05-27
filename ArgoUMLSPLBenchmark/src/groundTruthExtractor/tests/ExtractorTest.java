@@ -137,6 +137,18 @@ public class ExtractorTest {
 		Assert.assertEquals("jab.ClassWithInnerClass.InnerClass doSomething()", a.get(0));
 	}
 	
+	@Test
+	public void methodParameters() {
+		File f = new File("tests/groundTruthExtractor/MethodParameters.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.MethodParameters MethodParameters(String,String,String,String) Refinement", a.get(0));
+		// TODO
+		// This seems a bit arbitrary. Also correct would be jab.MethodParameters MethodParameters(String,String,String) Refinement not_FEATUREA.
+		// In fact, it can be considered two separate methods without refinement
+	}
+	
 	// @Test
 	// // TODO This test fails but there is no ELIF in ArgoUML SPL
 	// public void simpleElifTest() {
