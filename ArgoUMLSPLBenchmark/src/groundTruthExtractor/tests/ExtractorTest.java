@@ -106,6 +106,28 @@ public class ExtractorTest {
 		Assert.assertEquals("jab.SimpleElseTest doSomething() Refinement", a.get(0));
 	}
 	
+	@Test
+	public void simpleVariousMethodsSameFeature() {
+		File f = new File("tests/groundTruthExtractor/SimpleVariousMethodsSameFeature.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
+		Assert.assertEquals("jab.SimpleTestMethod doSomethingElse()", a.get(1));
+		Assert.assertEquals("jab.SimpleTestMethod doAnotherThing()", a.get(2));
+	}
+	
+	@Test
+	public void simpleVariousMethodsSameNestedFeature() {
+		File f = new File("tests/groundTruthExtractor/SimpleVariousMethodsSameNestedFeature.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA_and_FEATUREB");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SimpleTestMethod doSomething()", a.get(0));
+		Assert.assertEquals("jab.SimpleTestMethod doSomethingElse()", a.get(1));
+		Assert.assertEquals("jab.SimpleTestMethod doAnotherThing()", a.get(2));
+	}
+	
 	// @Test
 	// // TODO This test fails but there is no ELIF in ArgoUML SPL
 	// public void simpleElifTest() {
