@@ -23,15 +23,27 @@ public class TraceIdUtils {
 	}
 
 	public static String getId(TypeDeclaration typeDeclaration) {
+		StringBuffer qname = new StringBuffer();
 		CompilationUnit cu = (CompilationUnit) typeDeclaration.getRoot();
-		return getId(cu.getPackage()) + "." + typeDeclaration.getName().getFullyQualifiedName();
+		qname.append(getId(cu.getPackage()));
+		qname.append(".");
+		// nested and inner classes
+		Object parent = typeDeclaration.getParent();
+		while(parent != null && parent instanceof TypeDeclaration) {
+			qname.append(((TypeDeclaration)parent).getName().getFullyQualifiedName());
+			qname.append(".");
+			parent = ((TypeDeclaration)parent).getParent();
+		}
+		qname.append(typeDeclaration.getName().getFullyQualifiedName());
+		return qname.toString();
 	}
 
 	public static String getId(MethodDeclaration node) {
 		StringBuffer qname = new StringBuffer();
 		// TODO handle AnonymousClassDeclaration
 		if (node.getParent() instanceof TypeDeclaration) {
-			qname.append(getId((TypeDeclaration) node.getParent()));
+			TypeDeclaration typeParent = (TypeDeclaration) node.getParent();
+			qname.append(getId(typeParent));
 			qname.append(" ");
 			qname.append(node.getName().getIdentifier());
 			// add parameters to signature

@@ -69,12 +69,12 @@ org.argouml.uml.ui.behavior.activity_graphs.ActionNewClassifierInState actionPer
 org.argouml.uml.ui.behavior.activity_graphs.ActionSetSynch actionPerformed(ActionEvent) Refinement
 org.argouml.uml.ui.behavior.activity_graphs.ActionAddCISState doIt(Collection) Refinement
 org.argouml.uml.ui.behavior.activity_graphs.ActionRemoveCISState actionPerformed(ActionEvent) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionAddOFSState doIt(Collection) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionRemoveOFSState actionPerformed(ActionEvent) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionAddOFSParameter doIt(Collection) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionNewOFSParameter actionPerformed(ActionEvent) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionRemoveOFSParameter actionPerformed(ActionEvent) Refinement
-org.argouml.uml.ui.behavior.activity_graphs.ActionAddPartitionContent doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelObjectFlowState.ActionAddOFSState doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelObjectFlowState.ActionRemoveOFSState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelObjectFlowState.ActionAddOFSParameter doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelObjectFlowState.ActionNewOFSParameter actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelObjectFlowState.ActionRemoveOFSParameter actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.PropPanelPartition.ActionAddPartitionContent doIt(Collection) Refinement
 org.argouml.uml.ui.behavior.common_behavior.ActionNewAction actionPerformed(ActionEvent) Refinement
 org.argouml.uml.ui.behavior.state_machines.ActionAddEventAsDeferrableEvent doIt(Collection) Refinement
 org.argouml.uml.ui.behavior.state_machines.ActionNewCallEvent createEvent(Object)

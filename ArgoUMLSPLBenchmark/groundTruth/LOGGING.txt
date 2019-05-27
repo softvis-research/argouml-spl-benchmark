@@ -248,15 +248,15 @@ org.argouml.ui.explorer.ActionExportProfileXMI actionPerformed(ActionEvent) Refi
 org.argouml.ui.explorer.DnDExplorerTree Refinement
 org.argouml.ui.explorer.DnDExplorerTree dragGestureRecognized(DragGestureEvent) Refinement
 org.argouml.ui.explorer.DnDExplorerTree isValidDrag(TreePath,Transferable) Refinement
-org.argouml.ui.explorer.ArgoDropTargetListener dragEnter(DropTargetDragEvent) Refinement
-org.argouml.ui.explorer.ArgoDropTargetListener dragExit(DropTargetEvent) Refinement
-org.argouml.ui.explorer.ArgoDropTargetListener dragOver(DropTargetDragEvent) Refinement
-org.argouml.ui.explorer.ArgoDropTargetListener drop(DropTargetDropEvent) Refinement
+org.argouml.ui.explorer.DnDExplorerTree.ArgoDropTargetListener dragEnter(DropTargetDragEvent) Refinement
+org.argouml.ui.explorer.DnDExplorerTree.ArgoDropTargetListener dragExit(DropTargetEvent) Refinement
+org.argouml.ui.explorer.DnDExplorerTree.ArgoDropTargetListener dragOver(DropTargetDragEvent) Refinement
+org.argouml.ui.explorer.DnDExplorerTree.ArgoDropTargetListener drop(DropTargetDropEvent) Refinement
 org.argouml.ui.explorer.ExplorerEventAdaptor Refinement
 org.argouml.ui.explorer.ExplorerEventAdaptor propertyChange(PropertyChangeEvent) Refinement
 org.argouml.ui.explorer.ExplorerPopup Refinement
-org.argouml.ui.explorer.ActionCreateAssociation actionPerformed(ActionEvent) Refinement
-org.argouml.ui.explorer.ActionCreateAssociationRole actionPerformed(ActionEvent) Refinement
+org.argouml.ui.explorer.ExplorerPopup.ActionCreateAssociation actionPerformed(ActionEvent) Refinement
+org.argouml.ui.explorer.ExplorerPopup.ActionCreateAssociationRole actionPerformed(ActionEvent) Refinement
 org.argouml.ui.explorer.ExplorerTreeModel Refinement
 org.argouml.ui.explorer.ExplorerTreeModel collectChildren(Object,List,Set) Refinement
 org.argouml.ui.explorer.PerspectiveConfigurator Refinement
@@ -300,7 +300,7 @@ org.argouml.ui.targetmanager.TargetManager fireTargetAdded(TargetEvent) Refineme
 org.argouml.ui.targetmanager.TargetManager fireTargetRemoved(TargetEvent) Refinement
 org.argouml.ui.targetmanager.TargetManager navigateForward() Refinement
 org.argouml.ui.targetmanager.TargetManager navigateBackward() Refinement
-org.argouml.ui.targetmanager.Remover removeListener(Object) Refinement
+org.argouml.ui.targetmanager.TargetManager.Remover removeListener(Object) Refinement
 org.argouml.ui.TreeModelComposite Refinement
 org.argouml.ui.TreeModelComposite getIndexOfChild(Object,Object) Refinement
 org.argouml.uml.diagram.ArgoDiagramImpl Refinement
@@ -322,8 +322,8 @@ org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel vetoableChange(P
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge Refinement
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge layout() Refinement
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter Refinement
-org.argouml.uml.diagram.static_structure.layout.NodeRow doSplit(int,int) Refinement
-org.argouml.uml.diagram.static_structure.layout.NodeRow getWidth(int) Refinement
+org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter.NodeRow doSplit(int,int) Refinement
+org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter.NodeRow getWidth(int) Refinement
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter layout() Refinement
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter placeNode(ClassdiagramNode) Refinement
 org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter setupLinks() Refinement
@@ -346,7 +346,7 @@ org.argouml.uml.diagram.static_structure.ui.FigInterface Refinement
 org.argouml.uml.diagram.static_structure.ui.FigInterface setEnclosingFig(Fig) Refinement
 org.argouml.uml.diagram.static_structure.ui.FigPackage Refinement
 org.argouml.uml.diagram.static_structure.ui.PackagePortFigRect Refinement
-org.argouml.uml.diagram.static_structure.ui.FigPackageFigText mouseClicked(MouseEvent) Refinement
+org.argouml.uml.diagram.static_structure.ui.FigPackage.FigPackageFigText mouseClicked(MouseEvent) Refinement
 org.argouml.uml.diagram.static_structure.ui.FigPackage modelChanged(PropertyChangeEvent) Refinement
 org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram Refinement
 org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram UMLClassDiagram(Object) Refinement
@@ -498,8 +498,8 @@ org.argouml.uml.ui.SavePNGAction2 saveGraphics(OutputStream,Editor,Rectangle) Re
 org.argouml.uml.ui.SourcePathTableModel Refinement
 org.argouml.uml.ui.SourcePathTableModel SourcePathTableModel(SourcePathController) Refinement
 org.argouml.uml.ui.TabConstraints Refinement
-org.argouml.uml.ui.CR setData(String,EditingUtilities) Refinement
-org.argouml.uml.ui.CR setName(String,EditingUtilities) Refinement
+org.argouml.uml.ui.ConstraintModel.TabConstraints.CR setData(String,EditingUtilities) Refinement
+org.argouml.uml.ui.ConstraintModel.TabConstraints.CR setName(String,EditingUtilities) Refinement
 org.argouml.uml.ui.TabProps Refinement
 org.argouml.uml.ui.TabProps setTarget(Object) Refinement
 org.argouml.uml.ui.TabProps findPanelFor(Object) Refinement
