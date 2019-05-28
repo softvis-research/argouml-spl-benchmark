@@ -158,6 +158,22 @@ public class ExtractorTest {
 		// In fact, it can be considered two separate methods without refinement
 	}
 	
+	@Test
+	public void specialCaseOrTest() {
+		File f = new File("tests/groundTruthExtractor/SpecialCaseOrTest.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SpecialCaseOrTest", a.get(0));
+		// TODO FIXME
+		// (A or B) and A = A or (A and B) = A
+		// Assert.assertEquals("jab.SpecialCaseOrTest doSomething()", a.get(1));
+		a = result.get("FEATUREB");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.SpecialCaseOrTest", a.get(0));
+	}
+	
+	
 	// @Test
 	// // TODO This test fails but there is no ELIF in ArgoUML SPL
 	// public void simpleElifTest() {
