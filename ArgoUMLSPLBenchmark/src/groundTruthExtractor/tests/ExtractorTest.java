@@ -138,6 +138,15 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	public void classWithInnerClass2Levels() {
+		File f = new File("tests/groundTruthExtractor/ClassWithInnerClass2Levels.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.ClassWithInnerClass2Levels.InnerClass.InnerClass2 doSomething()", a.get(0));
+	}
+	
+	@Test
 	public void methodParameters() {
 		File f = new File("tests/groundTruthExtractor/MethodParameters.java");
 		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);

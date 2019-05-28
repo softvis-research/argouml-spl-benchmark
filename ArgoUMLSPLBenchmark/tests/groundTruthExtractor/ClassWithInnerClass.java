@@ -10,5 +10,6 @@ public class ClassWithInnerClass {
     		// do something
     	}
     	//#endif
+    }
     
 }

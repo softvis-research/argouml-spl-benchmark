@@ -498,8 +498,8 @@ org.argouml.uml.ui.SavePNGAction2 saveGraphics(OutputStream,Editor,Rectangle) Re
 org.argouml.uml.ui.SourcePathTableModel Refinement
 org.argouml.uml.ui.SourcePathTableModel SourcePathTableModel(SourcePathController) Refinement
 org.argouml.uml.ui.TabConstraints Refinement
-org.argouml.uml.ui.ConstraintModel.TabConstraints.CR setData(String,EditingUtilities) Refinement
-org.argouml.uml.ui.ConstraintModel.TabConstraints.CR setName(String,EditingUtilities) Refinement
+org.argouml.uml.ui.TabConstraints.ConstraintModel.CR setData(String,EditingUtilities) Refinement
+org.argouml.uml.ui.TabConstraints.ConstraintModel.CR setName(String,EditingUtilities) Refinement
 org.argouml.uml.ui.TabProps Refinement
 org.argouml.uml.ui.TabProps setTarget(Object) Refinement
 org.argouml.uml.ui.TabProps findPanelFor(Object) Refinement
