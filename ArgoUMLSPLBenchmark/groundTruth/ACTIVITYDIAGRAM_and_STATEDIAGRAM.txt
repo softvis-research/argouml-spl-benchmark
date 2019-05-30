@@ -17,7 +17,5 @@ org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionTimeEvent()
 org.argouml.uml.diagram.activity.ui.UMLActivityDiagram encloserChanged(FigNode,FigNode,FigNode) Refinement
 org.argouml.uml.diagram.activity.ui.UMLActivityDiagram drop(Object,Point) Refinement
 org.argouml.uml.diagram.DiagramFactory createInternal(DiagramType,Object,Object,DiagramSettings) Refinement
-org.argouml.uml.diagram.state.ui.FigFinalState makeSelection() Refinement
-org.argouml.uml.diagram.state.ui.FigStateVertex makeSelection() Refinement
 org.argouml.uml.diagram.state.ui.UMLStateDiagram Refinement
 org.argouml.uml.diagram.state.ui.UMLStateDiagram drop(Object,Point) Refinement

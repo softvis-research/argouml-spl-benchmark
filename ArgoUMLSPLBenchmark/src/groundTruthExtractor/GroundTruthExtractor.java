@@ -214,9 +214,10 @@ public class GroundTruthExtractor {
 								System.out.println(id);
 							}
 						} else if (granularity.equals(GRANULARITY_METHOD)) {
-							List<MethodDeclaration> wrappingMethods = getWrappingMethods(methods, currentBlockStart.peek(), end);
+							List<MethodDeclaration> wrappingMethods = getWrappingMethods(methods,
+									currentBlockStart.peek(), end);
 							if (!wrappingMethods.isEmpty()) {
-								for(MethodDeclaration method : wrappingMethods) {
+								for (MethodDeclaration method : wrappingMethods) {
 									String id = TraceIdUtils.getId(method);
 									addMapping(featureToImplementationMap, feature, id);
 									System.out.println(id);
@@ -336,7 +337,7 @@ public class GroundTruthExtractor {
 	/**
 	 * If we have more than one item in the stack it means that we had nested
 	 * #ifdefined. If peek is A, and then we had B as second item, the result will
-	 * be A_B
+	 * be A_and_B
 	 * 
 	 * @param currentBlockFeatures
 	 * @return the list of features
@@ -353,23 +354,20 @@ public class GroundTruthExtractor {
 			return peek;
 		}
 
+		// Nested #ifdefined so we take the peek features to append the _and_
 		List<String> features = new ArrayList<String>();
 		features.addAll(peek);
 
 		for (int i = 0; i < currentBlockFeatures.size(); i++) {
 			List<String> currentFs = currentBlockFeatures.get(i);
-			if (currentFs != peek) {
+			if (currentFs != peek && !currentFs.containsAll(peek)) {
 				List<String> toBeAdded = new ArrayList<String>();
 				for (String f : features) {
 					for (String f2 : currentFs) {
-						if (f.compareTo(f2) == 0 || f.indexOf(f2) != -1 || f2.indexOf(f) != -1) {
+						if (f.equals(f2) || isFPartOfAnAnd(f, f2)) {
 							// they are equal or it is contained, it is not
 							// added
-							// sort alphabetically
-							// TODO we can use f.indexOf(f2)!=-1 because in this
-							// case there are no features with a name that
-							// contains the name of another feature.
-						} else if (f.compareTo(f2) != 0) {
+						} else if (!f.equals(f2)) {
 							toBeAdded.add(f + AND_FEATURES + f2);
 						}
 					}
@@ -388,6 +386,28 @@ public class GroundTruthExtractor {
 		return toReturn;
 	}
 
+	/**
+	 * Check if a feature is contained in another. For example, if f is FEATUREA and
+	 * f2 is FEATUREA_AND_FEATUREB, it will return true
+	 * 
+	 * @param f
+	 * @param f2
+	 * @return whether the f is contained in f2
+	 */
+	public static boolean isFPartOfAnAnd(String f, String f2) {
+		List<String> l = Arrays.asList(f.split(AND_FEATURES));
+		List<String> l2 = Arrays.asList(f2.split(AND_FEATURES));
+		return l2.containsAll(l);
+	}
+
+	/**
+	 * In case of feature name with _ands_, it removes duplicates and sort them
+	 * alphabetically. For example FEATUREB_and_FEATUREA_and_FEATUREA will return
+	 * FEATUREA_and_FEATUREB
+	 * 
+	 * @param feature
+	 * @return correct feature name
+	 */
 	public static String getUniformFeatureWithAnd(String f) {
 		List<String> l = Arrays.asList(f.split(AND_FEATURES));
 		// remove duplicated
@@ -496,7 +516,18 @@ public class GroundTruthExtractor {
 	public static String getJPPGranularity(String blockText) {
 		String[] lines = blockText.split("\\r?\\n");
 		// normally is the second line but not always, get first time it appears
+		// check if the current ifdefined does not have a granularity comment before the
+		// next ifdefined
+		int ifdefinedFound = 0;
 		for (String line : lines) {
+			// this is the first time
+			if (line.contains(JPPIFDEFINED) || line.contains(JPPELIFDEFINED) || line.contains(JPPELSE)) {
+				ifdefinedFound++;
+				// the first line is the current ifdefined but we stop searching if we find another one
+				if (ifdefinedFound>=2) {
+					break;
+				}
+			}
 			if (line.contains(GRANULARITY)) {
 				return line.substring(line.indexOf(":GranularityType:") + ":GranularityType:".length());
 			}

@@ -1,4 +1,5 @@
 //#if defined(FEATUREA)
+//@#$LPS-ACTIVITYDIAGRAM:GranularityType:Class
 package jab;
 
 // Example found in org.argouml.uml.diagram.activity.ui.UMLActivityDiagram
