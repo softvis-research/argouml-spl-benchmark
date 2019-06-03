@@ -186,3 +186,28 @@ GroundTruthExtractor.java has a main method used to create the txt files in the 
 RandomScenariosConfigsGenerator.java has a main method used to define the random scenarios.
 
 ScenarioBuildXMLFilesGenerator.java has a main method used to create the build files of each scenario based on the content of the configs folder of each scenario.
+
+## Ground-truth clarifications
+The format of the ground-truth is explained in the [challenge case description](https://sites.google.com/site/jabiermartinezwebsite/ArgoUML_SPL_Benchmark.pdf), however, there is a special case that it is important to mention. The involved class is org.argouml.profile.UserDefinedProfile.UserDefinedProfile. To illustrate this case, you can find below the code of a class with a constructor method where a parameter is only present in case of FEATUREA. 
+
+```
+package myPackage;
+public class MethodParameters {
+
+public MethodParameters(String a, String b, 
+        //#if defined(FEATUREA)
+        //@#$LPS-FEATUREA:GranularityType:MethodSignature
+    		String c,
+        //#endif
+    		String d) {
+        // do something
+    }
+    
+}
+```
+The trace in the ground-truth will be the method with all the parameters and the refinement tag:
+```
+myPackage.MethodParameters MethodParameters(String,String,String,String) Refinement
+```
+This can be considered as arbitrary. Also correct would be "myPackage.MethodParameters MethodParameters(String,String,String) Refinement" for not_FEATUREA. Or even it can be considered two separate methods (one for FEATUREA and another for not_FEATUREA) with their corresponding parameters and without the refinement tag. For the moment, please use the method with all the parameters and the refinement tag for these cases.
+
