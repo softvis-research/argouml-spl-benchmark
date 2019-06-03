@@ -38,6 +38,7 @@ public class GroundTruthExtractor {
 	private static final String GRANULARITY_PACKAGE = "Package";
 	private static final String GRANULARITY_CLASS = "Class";
 	private static final String GRANULARITY_METHOD = "Method";
+	private static final String GRANULARITY_INTERFACEMETHOD = "InterfaceMethod";
 
 	private static final String GRANULARITY = "//@#$LPS";
 	private static final String JPPIFDEFINED = "//#if defined(";
@@ -213,7 +214,7 @@ public class GroundTruthExtractor {
 								addMapping(featureToImplementationMap, feature, id);
 								System.out.println(id);
 							}
-						} else if (granularity.equals(GRANULARITY_METHOD)) {
+						} else if (granularity.equals(GRANULARITY_METHOD) || granularity.equals(GRANULARITY_INTERFACEMETHOD)) {
 							List<MethodDeclaration> wrappingMethods = getWrappingMethods(methods,
 									currentBlockStart.peek(), end);
 							if (!wrappingMethods.isEmpty()) {

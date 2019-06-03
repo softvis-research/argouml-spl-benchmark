@@ -1,5 +1,5 @@
 //#if defined(FEATUREA)
-//@#$LPS-COGNITIVE:GranularityType:Package
+//@#$LPS-FEATUREA:GranularityType:Package
 package jab;
 
 public class SimpleTestClass {

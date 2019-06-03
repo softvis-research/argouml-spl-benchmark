@@ -1,11 +1,11 @@
 //#if defined(FEATUREA) or defined(FEATUREB)
-//@#$LPS-COGNITIVE:GranularityType:Package
+//@#$LPS-FEATUREA:GranularityType:Package
 package jab;
 
 public class SimpleOrTest {
 	
 	//#if defined(FEATUREC)
-	//@#$LPS-COGNITIVE:GranularityType:Method
+	//@#$LPS-FEATUREC:GranularityType:Method
 	public void doSomething(){
 		// do something
 	}

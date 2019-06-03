@@ -257,6 +257,18 @@ public class ExtractorTest {
 		result.remove("FEATUREA_and_FEATUREB");
 		Assert.assertTrue(result.isEmpty());
 	}
+	
+	@Test
+	public void interfaceMethod() {
+		File f = new File("tests/groundTruthExtractor/InterfaceMethod.java");
+		Map<String, List<String>> result = GroundTruthExtractor.parseFile(f);
+		List<String> a = result.get("FEATUREA");
+		Assert.assertNotNull(a);
+		Assert.assertEquals("jab.InterfaceMethod doSomething()", a.get(0));
+		// no more results
+		result.remove("FEATUREA");
+		Assert.assertTrue(result.isEmpty());
+	}
 
 	// @Test
 	// // TODO This test fails but there is no ELIF in ArgoUML SPL

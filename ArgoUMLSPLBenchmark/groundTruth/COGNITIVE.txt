@@ -153,6 +153,7 @@ org.argouml.profile.UserDefinedProfile str2Priority(String)
 org.argouml.profile.UserDefinedProfile str2Decision(String)
 org.argouml.profile.UserDefinedProfile getAllCritiquesInModel()
 org.argouml.ui.Clarifier Refinement
+org.argouml.ui.Clarifier setToDoItem(ToDoItem)
 org.argouml.ui.cmd.ActionNew Refinement
 org.argouml.ui.cmd.ActionNew actionPerformed(ActionEvent) Refinement
 org.argouml.ui.cmd.ActionSelectAll Refinement
