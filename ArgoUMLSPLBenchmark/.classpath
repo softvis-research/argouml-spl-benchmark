@@ -162,6 +162,7 @@
 	<classpathentry kind="lib" path="libs/websocket-server-9.3.6.v20151106.jar"/>
 	<classpathentry kind="lib" path="libs/websocket-servlet-9.3.6.v20151106.jar"/>
 	<classpathentry kind="lib" path="libs/WMI4Java-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/org.neo4j.procedure-apoc-3.5.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
