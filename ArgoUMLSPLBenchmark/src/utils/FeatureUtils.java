@@ -2,6 +2,7 @@ package utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,14 @@ public class FeatureUtils {
 	Map<String, List<String>> mapFeatureConfigs = new LinkedHashMap<String, List<String>>();
 	Map<String, File> mapConfigVariantFolder = new LinkedHashMap<String, File>();
 
+	
+	final static List<String> SINGLE_FEATURES = Arrays
+			.asList(new String[] { "ACTIVITYDIAGRAM", "COGNITIVE", "COLLABORATIONDIAGRAM", "DEPLOYMENTDIAGRAM",
+					"LOGGING", "SEQUENCEDIAGRAM", "STATEDIAGRAM", "USECASEDIAGRAM" });
+
 	/**
-	 * We get all the info in the constructor
+	 *
+	 * We get all the info in the constructor**
 	 * 
 	 * @param scenarioFolderPath
 	 */
@@ -65,6 +72,30 @@ public class FeatureUtils {
 			System.err.println(variantsFolder.getAbsolutePath()
 					+ " does not exist. You should build the scenario before. Use the Ant scripts in the scenario folder.");
 			return;
+		}
+
+		// add  feature negations to config
+		List<String> allRelevantFeatures = new ArrayList<String>(featureIds);
+		for (File config : configsFolder.listFiles()) {
+			if (config.getName().endsWith(".config")) {
+				List<String> featuresInConfig = FileUtils.getLinesOfFile(config);
+				for (String relevantFeature : allRelevantFeatures) {
+					String notFeature = "not_" + relevantFeature;
+					// add not feature for each single feature
+					if (!featuresInConfig.contains(relevantFeature) && !featuresInConfig.contains(notFeature)) {
+						try {
+							// add not feature to config file
+							FileUtils.appendToFile(config, notFeature);
+						} catch (Exception e) {
+							System.err.println(e.getMessage());
+						}
+						// add not-feature to featureids
+						if (!featureIds.contains(notFeature)) {
+							featureIds.add(notFeature);
+						}
+					}
+				}
+			}
 		}
 
 		// Go through all the configs
@@ -151,14 +182,26 @@ public class FeatureUtils {
 	public List<String> getFeaturesOfConfiguration(String configurationId) {
 		return mapConfigFeatures.get(configurationId);
 	}
-	
+
 	/**
 	 * Get variant folder of a given configuration
 	 * 
 	 * @param configurationId
 	 * @return the folder of this variant
 	 */
-	public File getVariantFolderOfConfig(String configurationId){
+	public File getVariantFolderOfConfig(String configurationId) {
 		return mapConfigVariantFolder.get(configurationId);
+	}
+
+	public boolean isCombinedFeature(String featureId) {
+		return featureId.contains("_and_");
+	}
+
+	public List<String> getSingleFeatures(String combinedFeatureId) {
+		if (isCombinedFeature(combinedFeatureId)) {
+			return Arrays.asList(combinedFeatureId.split("_and_"));
+		} else {
+			return new ArrayList<String>();
+		}
 	}
 }
