@@ -141,7 +141,7 @@ public class GraphBasedFeatureLocationTechnique {
 					LOGGER.info("Found " + result.get("size(featureTraces)") + " feature traces");
 				});
 
-		// query exclusive and interaction feature traces
+		// query pure and interaction feature traces
 		for (String feature : SINGLE_FEATURES) {
 			scenarioHandler.executeQuery("MATCH (featureTrace:FeatureTrace) "
 					+ "WITH collect(featureTrace) as allFeatureTraces " + "MATCH (notFeatureNode:Feature{name:'not_"
@@ -151,7 +151,7 @@ public class GraphBasedFeatureLocationTechnique {
 					+ "WITH featureTraces, [(mt:Method)<-[DECLARES]-(ct:Class) WHERE NOT ct in featureTraces AND mt in featureTraces | mt] as featureMethodTraces, [ct IN featureTraces WHERE ct:Class| ct] as featureClassTraces "
 					+ "MATCH (featureNode:Feature {name:'" + feature + "'}) "
 					+ "WITH (featureMethodTraces + featureClassTraces) as filteredfeatureTraces, featureNode "
-					+ "FOREACH (ft in (filteredfeatureTraces) |  CREATE (featureNode)-[:HAS{value:'EXCLUSIVE'}]->(ft)) "
+					+ "FOREACH (ft in (filteredfeatureTraces) |  CREATE (featureNode)-[:HAS{value:'pure'}]->(ft)) "
 					+ "RETURN size(filteredfeatureTraces)").forEachRemaining(result -> {
 						LOGGER.info("Found " + result.get("size(filteredfeatureTraces)") + " " + feature + " traces");
 					});
@@ -164,7 +164,7 @@ public class GraphBasedFeatureLocationTechnique {
 				scenarioHandler.executeQuery("MATCH (f1:Feature{name:'" + feature1
 						+ "'})-[r1:HAS]->(trace:FeatureTrace) " + "MATCH (f2:Feature{name:'" + feature2
 						+ "'})-[r2:HAS]->(trace:FeatureTrace) " + "WITH trace, r1, r2 "
-						+ "SET r1.value = 'AND', r2.value = 'AND'  " + "RETURN count(trace)")
+						+ "SET r1.value = 'int', r2.value = 'int'  " + "RETURN count(trace)")
 						.forEachRemaining(result -> {
 							LOGGER.info("Found " + result.get("count(trace)") + " interaction " + feature1 + " and "
 									+ feature2 + " traces");
@@ -179,7 +179,7 @@ public class GraphBasedFeatureLocationTechnique {
 				scenarioHandler
 						.executeQuery("MATCH (featureNode:Feature{name:'" + featureId
 								+ "'})-[r:HAS]->(featureTrace:FeatureTrace) "
-								+ "WHERE r.value='OR' OR r.value='EXCLUSIVE'" + "RETURN featureTrace.value")
+								+ "WHERE r.value='OR' OR r.value='pure'" + "RETURN featureTrace.value")
 						.forEachRemaining(result -> {
 							traces.add(result.get("featureTrace.value").toString());
 						});
@@ -188,17 +188,17 @@ public class GraphBasedFeatureLocationTechnique {
 
 				if (singleFeatures.size() == 2) {
 					scenarioHandler.executeQuery("MATCH (:Feature{name:'" + singleFeatures.get(0)
-							+ "'})-[r1:HAS{value:'AND'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
-							+ singleFeatures.get(1) + "'})-[r2:HAS{value:'AND'}]->(featureTrace:FeatureTrace) "
+							+ "'})-[r1:HAS{value:'int'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
+							+ singleFeatures.get(1) + "'})-[r2:HAS{value:'int'}]->(featureTrace:FeatureTrace) "
 							+ "RETURN DISTINCT featureTrace.value").forEachRemaining(result -> {
 								traces.add(result.get("featureTrace.value").toString());
 							});
 				} else {
 					scenarioHandler.executeQuery("MATCH (:Feature{name:'" + singleFeatures.get(0)
-							+ "'})-[r1:HAS{value:'AND'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
-							+ singleFeatures.get(1) + "'})-[r2:HAS{value:'AND'}]->(featureTrace:FeatureTrace) "
+							+ "'})-[r1:HAS{value:'int'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
+							+ singleFeatures.get(1) + "'})-[r2:HAS{value:'int'}]->(featureTrace:FeatureTrace) "
 							+ "MATCH (:Feature{name:'" + singleFeatures.get(2)
-							+ "'})-[r3:HAS{value:'AND'}]->(featureTrace:FeatureTrace) "
+							+ "'})-[r3:HAS{value:'int'}]->(featureTrace:FeatureTrace) "
 							+ "RETURN DISTINCT featureTrace.value").forEachRemaining(result -> {
 								traces.add(result.get("featureTrace.value").toString());
 							});
