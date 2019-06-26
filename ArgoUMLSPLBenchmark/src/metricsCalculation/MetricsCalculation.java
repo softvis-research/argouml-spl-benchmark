@@ -25,7 +25,7 @@ public class MetricsCalculation {
 
 	public static void main(String[] args) {
 		System.out.println("Metrics calculation");
-		File groundTruth = new File("groundTruth");
+		File groundTruth = new File("prunedGroundTruth");// changed to prunedGroundTruth
 		File yourResults = new File("yourResults");
 		File yourResultsMetrics = new File("yourResultsMetrics");
 		String results = getResults(groundTruth, yourResults);
