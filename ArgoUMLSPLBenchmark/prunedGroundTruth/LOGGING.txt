@@ -1,0 +1,3 @@
+org.argouml.notation.providers.uml.AbstractMessageNotationUml printDebugInfo(String,String,StringBuilder,String,StringBuilder,List<List>,List<Integer>,boolean,boolean)
+org.argouml.persistence.ArgoParser logError(String,SAXException)
+org.argouml.util.Tools logVersionInfo()
