@@ -60,7 +60,7 @@ public class GraphBasedFeatureLocationTechnique {
 		createTraceGraph();
 
 		// do set operations
-		queryFeatureTraces();
+		computeFeatureTraces();
 
 		// write out located traces for each feature
 		for (String featureId : featuresToLocate) {
@@ -120,7 +120,7 @@ public class GraphBasedFeatureLocationTechnique {
 		}
 	}
 
-	private void queryFeatureTraces() {
+	private void computeFeatureTraces() {
 		LOGGER.info("Querying feature traces.");
 		// query core traces
 		scenarioHandler.start();
