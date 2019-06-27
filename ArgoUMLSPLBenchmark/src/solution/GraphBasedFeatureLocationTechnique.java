@@ -138,7 +138,6 @@ public class GraphBasedFeatureLocationTechnique {
 				.forEachRemaining(result -> {
 					LOGGER.info("Found " + result.get("size(featureTraces)") + " feature traces");
 				});
-		// TODO changed
 		// query pure and interaction (and) traces
 		for (String feature : SINGLE_FEATURES) {
 			scenarioHandler.executeQuery("MATCH (featureTrace:FeatureTrace) "
@@ -154,13 +153,11 @@ public class GraphBasedFeatureLocationTechnique {
 						LOGGER.info("Found " + result.get("size(filteredfeatureTraces)") + " " + feature + " traces");
 					});
 		}
-		// TODO changed
 		// separate interaction traces
 		for (int i = 0; i < SINGLE_FEATURES.size(); i++) {
 			for (int j = i + 1; j < SINGLE_FEATURES.size(); j++) {
 				String feature1 = SINGLE_FEATURES.get(i);
 				String feature2 = SINGLE_FEATURES.get(j);
-				// TODO added
 				scenarioHandler.executeQuery("MATCH (f1:Feature{name:'" + feature1
 						+ "'})-[r1:HAS]->(directTrace:FeatureTrace) "
 						+ "MATCH (f1)-[:HAS]->(:FeatureTrace)-[:DECLARES]->(indirectTrace) "
@@ -186,7 +183,6 @@ public class GraphBasedFeatureLocationTechnique {
 		for (String featureId : featuresToLocate) {
 			List<String> traces = new ArrayList<String>();
 			if (!utils.isCombinedFeature(featureId) && !featureId.contains("not")) {
-				// TODO changed
 				scenarioHandler.executeQuery(
 						"MATCH (:Feature{name:'" + featureId + "'})-[r:HAS{value:'pure'}]->(featureTrace:FeatureTrace) "
 								+ "RETURN featureTrace.value")
