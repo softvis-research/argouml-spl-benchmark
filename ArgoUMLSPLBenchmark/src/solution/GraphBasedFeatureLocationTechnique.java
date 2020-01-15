@@ -3,20 +3,24 @@ package solution;
 import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import solution.parser.JavaSourceCodeParser;
 import utils.FeatureUtils;
-import utils.FileUtils;
-import utils.JQAssistantUtils;
-import utils.TraceIdUtils;
 
 /**
  * Creates software graphs for variants of a scenario, a trace graph, queries
@@ -30,13 +34,11 @@ public class GraphBasedFeatureLocationTechnique {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private Map<String, List<String>> featureTraceMap = new LinkedHashMap<String, List<String>>();
 	private FeatureUtils utils = null;
-	private GraphDatabaseHandler variantHandler = null;
-	private GraphDatabaseInserter scenarioHandler = null;
+	private GraphDatabaseHandler scenarioHandler = null;
 	private List<String> featuresToLocate = null;
 	private String scenarioPath = null;
-	final static List<String> SINGLE_FEATURES = Arrays
-			.asList(new String[] { "ACTIVITYDIAGRAM", "COGNITIVE", "COLLABORATIONDIAGRAM", "DEPLOYMENTDIAGRAM",
-					"LOGGING", "SEQUENCEDIAGRAM", "STATEDIAGRAM", "USECASEDIAGRAM" });
+	private static final String JQASSISTANT_DATABASE_FOLDER = "/jqassistant/store";
+	private Path graphDbFolder = null;
 
 	public GraphBasedFeatureLocationTechnique(String scenarioPath, List<String> featuresToLocate)
 			throws RuntimeException, IOException, InterruptedException {
@@ -46,239 +48,152 @@ public class GraphBasedFeatureLocationTechnique {
 			throw new IOException("The variants folder does not exist yet at " + scenarioPath
 					+ "\nYou should build the scenario before. Use the Ant scripts in the scenario folder.");
 		}
-		// init feature utils
 		this.utils = new FeatureUtils(scenarioPath);
-		// set features to be located
 		this.featuresToLocate = featuresToLocate;
-		// set scenario path
 		this.scenarioPath = scenarioPath;
+		this.graphDbFolder = Paths.get(new File(scenarioPath).getAbsolutePath() + JQASSISTANT_DATABASE_FOLDER);
+	}
 
-		// scan variant folders
-		createSoftwareGraph();
-
-		// create trace graph for scenario
-		createTraceGraph();
-
-		// do set operations
-		computeFeatureTraces();
-
-		// write out located traces for each feature
-		for (String featureId : featuresToLocate) {
-			createTracesFile(featureId);
+	public void createTraceGraph() throws RuntimeException, IOException, InterruptedException {
+		if (Files.notExists(graphDbFolder)) {
+			LOGGER.info("Create trace graph for scenario " + scenarioPath);
+			GraphDatabaseInserter databaseInserter = new GraphDatabaseInserter(graphDbFolder.toFile());
+			// create a node for each variant
+			databaseInserter.createConfigurations(utils.getConfigurationIds());
+			// scan variants
+			JavaSourceCodeParser scanner = new JavaSourceCodeParser(databaseInserter, scenarioPath,
+					utils.getConfigurationIds());
+			scanner.scanScenarioVariants();
+			databaseInserter.shutdown();
+		} else { // source code of scenario was scanned
+			LOGGER.info("Scenario " + scenarioPath + " has already been scanned.");
 		}
 	}
 
-	private void createSoftwareGraph() throws IOException, InterruptedException {
-		// scan source code of variants with jqassistant if not already done
-		for (String configurationId : utils.getConfigurationIds()) {
-			JQAssistantUtils.scanVariantFolder(utils.getVariantFolderOfConfig(configurationId));
-		}
-	}
-
-	private void createTraceGraph() throws IOException {
-		// show all configurations of scenario
-		List<String> availableFeaturesInScenario = new ArrayList<>();
-		for (String config : utils.getConfigurationIds()) {
-			List<String> featuresInVariant = utils.getFeaturesOfConfiguration(config);
-			for (String featureInVariant : featuresInVariant) {
-				if (!availableFeaturesInScenario.contains(featureInVariant)) {
-					availableFeaturesInScenario.add(featureInVariant);
-				}
-			}
-			LOGGER.info(config + ": " + featuresInVariant);
-		}
-
-		// init scenario database for trace database
-		scenarioHandler = new GraphDatabaseInserter(
-				new File(scenarioPath + JQAssistantUtils.getJQAssistantDatabaseFolder()));
-		scenarioHandler.createFeatureNodes(availableFeaturesInScenario);
-
-		// traces for this configuration
-		List<String> currentClassTraces = new ArrayList<String>();
-		List<String> currentMethodTraces = new ArrayList<String>();
-
-		for (String configurationId : utils.getConfigurationIds()) {
-			File variantFolder = utils.getVariantFolderOfConfig(configurationId);
-
-			LOGGER.info("Creating trace graph from variant: " + variantFolder.getPath());
-
-			// start Neo4j instance for variant
-			File dbDir = new File(variantFolder.getAbsolutePath() + JQAssistantUtils.getJQAssistantDatabaseFolder());
-			variantHandler = new GraphDatabaseHandler(dbDir);
-
-			// query class and method traces
-			currentClassTraces = queryClassQualifiedNameTraces();
-			currentMethodTraces = queryMethodQualifiedNameTraces();
-
-			// stop Neo4j instance
-			variantHandler.shutdown();
-
-			// create trace graph
-			scenarioHandler.createConfigurationNode(configurationId, utils.getFeaturesOfConfiguration(configurationId));
-			scenarioHandler.createTraceGraph(configurationId, currentClassTraces, "Class", false);
-			scenarioHandler.createTraceGraph(configurationId, currentMethodTraces, "Method", false);
-		}
-	}
-
-	private void computeFeatureTraces() {
-		LOGGER.info("Querying feature traces.");
-		// query core traces
-		scenarioHandler.start();
-		scenarioHandler.executeQuery("MATCH (:Configuration{name:'P01_AllDisabled.config'})-[:HAS]->(coreTrace:Trace) "
-				+ "SET coreTrace:Core " + "RETURN count(coreTrace)").forEachRemaining(result -> {
-					LOGGER.info("Found " + result.get("count(coreTrace)") + " core traces");
-				});
-		// query feature traces
-		scenarioHandler
-				.executeQuery("MATCH (coreTrace:Core) " + "WITH collect(coreTrace) as coreTraces "
-						+ "MATCH (:Configuration{name:'P02_AllEnabled.config'})-[:HAS]->(featureAndCoreTrace:Trace) "
-						+ "WITH coreTraces, collect(featureAndCoreTrace) as featureAndCoreTraces "
-						+ "WITH apoc.coll.subtract(featureAndCoreTraces, coreTraces) as featureTraces "
-						+ "FOREACH (f in featureTraces | SET  f:FeatureTrace ) " + "RETURN size(featureTraces)")
-				.forEachRemaining(result -> {
-					LOGGER.info("Found " + result.get("size(featureTraces)") + " feature traces");
-				});
-		// TODO changed
-		// query pure and interaction (and) traces
-		for (String feature : SINGLE_FEATURES) {
-			scenarioHandler.executeQuery("MATCH (featureTrace:FeatureTrace) "
-					+ "WITH collect(featureTrace) as allFeatureTraces " + "MATCH (notFeatureNode:Feature{name:'not_"
-					+ feature + "'})<-[:HAS]-(:Configuration)-[:HAS]->(notFeatureTrace:FeatureTrace) "
-					+ "WITH allFeatureTraces, collect(notFeatureTrace) as notFeatureTraces "
-					+ "WITH apoc.coll.subtract(allFeatureTraces, notFeatureTraces) as featureTraces "
-					+ "WITH featureTraces, [(mt:Method)<-[DECLARES]-(ct:Class) WHERE NOT ct in featureTraces AND mt in featureTraces | mt] as featureMethodTraces, [ct IN featureTraces WHERE ct:Class| ct] as featureClassTraces "
-					+ "MATCH (featureNode:Feature {name:'" + feature + "'}) "
-					+ "WITH (featureMethodTraces + featureClassTraces) as filteredfeatureTraces, featureNode "
-					+ "FOREACH (ft in (filteredfeatureTraces) |  CREATE (featureNode)-[:HAS{value:'pure'}]->(ft)) "
-					+ "RETURN size(filteredfeatureTraces)").forEachRemaining(result -> {
-						LOGGER.info("Found " + result.get("size(filteredfeatureTraces)") + " " + feature + " traces");
-					});
-		}
-		// TODO changed
-		// separate interaction traces
-		for (int i = 0; i < SINGLE_FEATURES.size(); i++) {
-			for (int j = i + 1; j < SINGLE_FEATURES.size(); j++) {
-				String feature1 = SINGLE_FEATURES.get(i);
-				String feature2 = SINGLE_FEATURES.get(j);
-				// TODO added
-				scenarioHandler.executeQuery("MATCH (f1:Feature{name:'" + feature1
-						+ "'})-[r1:HAS]->(directTrace:FeatureTrace) "
-						+ "MATCH (f1)-[:HAS]->(:FeatureTrace)-[:DECLARES]->(indirectTrace) "
-						+ "WITH f1, collect(DISTINCT directTrace) + collect(DISTINCT indirectTrace) as traces1 "
-						+ "MATCH (f2:Feature{name:'" + feature2 + "'})-[r2:HAS]->(directTrace:FeatureTrace) "
-						+ "MATCH (f2)-[:HAS]->(:FeatureTrace)-[:DECLARES]->(indirectTrace) "
-						+ "WITH f1, f2, traces1, collect(DISTINCT directTrace) + collect(DISTINCT indirectTrace) as traces2 "
-						+ "WITH f1, f2, apoc.coll.intersection(traces1, traces2) as interactionTraces "
-						+ "WITH f1, f2, [t in interactionTraces WHERE NOT ((f1)-[:HAS]->(:FeatureTrace)-[:DECLARES]->(t) AND (f2)-[:HAS]->(:FeatureTrace)-[:DECLARES]->(t)) | t ] as filteredInteractionTraces "
-						+ "UNWIND filteredInteractionTraces as filteredInteractionTrace "
-						+ "OPTIONAL MATCH (f1)-[r1:HAS{value:'pure'}]->(filteredInteractionTrace) "
-						+ "OPTIONAL MATCH (f2)-[r2:HAS{value:'pure'}]->(filteredInteractionTrace) "
-						+ "MERGE (f1)-[:HAS{value:'and'}]->(filteredInteractionTrace) "
-						+ "MERGE (f2)-[:HAS{value:'and'}]->(filteredInteractionTrace) " + "DELETE r1 " + "DELETE r2 "
-						+ "RETURN count(filteredInteractionTrace)").forEachRemaining(result -> {
-							LOGGER.info("Found " + result.get("count(filteredInteractionTrace)") + " interaction "
-									+ feature1 + " and " + feature2 + " traces");
-						});
-			}
-		}
-
-		// write out traces
-		for (String featureId : featuresToLocate) {
-			List<String> traces = new ArrayList<String>();
-			if (!utils.isCombinedFeature(featureId) && !featureId.contains("not")) {
-				// TODO changed
-				scenarioHandler.executeQuery(
-						"MATCH (:Feature{name:'" + featureId + "'})-[r:HAS{value:'pure'}]->(featureTrace:FeatureTrace) "
-								+ "RETURN featureTrace.value")
-						.forEachRemaining(result -> {
-							traces.add(result.get("featureTrace.value").toString());
-						});
-			} else if (utils.isCombinedFeature(featureId)) {
-				List<String> singleFeatures = Arrays.asList(featureId.split("_and_"));
-
-				if (singleFeatures.size() == 2) {
-					scenarioHandler.executeQuery("MATCH (:Feature{name:'" + singleFeatures.get(0)
-							+ "'})-[:HAS{value:'and'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
-							+ singleFeatures.get(1) + "'})-[:HAS{value:'and'}]->(featureTrace:FeatureTrace) "
-							+ "RETURN DISTINCT featureTrace.value").forEachRemaining(result -> {
-								traces.add(result.get("featureTrace.value").toString());
-							});
+	public void computeTraces() {
+		LOGGER.info("Compute feature traces for " + featuresToLocate);
+		scenarioHandler = new GraphDatabaseHandler(graphDbFolder.toFile());
+		Map<String, List<String>> elementarySetTraceMap = new HashMap<String, List<String>>();
+		for (String feature : featuresToLocate) {
+			List<String> elementarySets = utils.getElementarySetsOfFeature(feature);
+			List<String> featureTraces = new ArrayList<String>();
+			for (String elementarySet : elementarySets) {
+				if (elementarySetTraceMap.containsKey(elementarySet)) {
+					featureTraces.addAll(elementarySetTraceMap.get(elementarySet));
 				} else {
-					scenarioHandler.executeQuery("MATCH (:Feature{name:'" + singleFeatures.get(0)
-							+ "'})-[:HAS{value:'and'}]->(featureTrace:FeatureTrace) " + "MATCH (:Feature{name:'"
-							+ singleFeatures.get(1) + "'})-[:HAS{value:'and'}]->(featureTrace:FeatureTrace) "
-							+ "MATCH (:Feature{name:'" + singleFeatures.get(2)
-							+ "'})-[:HAS{value:'and'}]->(featureTrace:FeatureTrace) "
-							+ "RETURN DISTINCT featureTrace.value").forEachRemaining(result -> {
-								traces.add(result.get("featureTrace.value").toString());
-							});
+					List<String> elementaryClassTraces = new ArrayList<String>();
+					List<String> elementaryClassRefinementTraces = new ArrayList<String>();
+					List<String> elementaryMethodTraces = new ArrayList<String>();
+					List<String> elementaryMethodRefinementTraces = new ArrayList<String>();
+					List<String> elementarySetTraces = new ArrayList<String>();
+					List<String> minuends = utils.getMinuendsOfElementarySet(elementarySet);
+					List<String> subtrahends = utils.getSubtrahendsOfElementarySet(elementarySet);
+					// remove missing configs
+					minuends.removeIf(Objects::isNull);
+					subtrahends.removeIf(Objects::isNull);
+
+					if (!minuends.isEmpty() && !subtrahends.isEmpty()) {
+						List<String> classAndMethodTraces = new ArrayList<String>();
+						
+						elementaryClassTraces.addAll(applySetOperations(minuends, subtrahends, "Class"));
+						classAndMethodTraces.addAll(elementaryClassTraces);
+						elementaryClassTraces
+								.removeIf(trace -> classAndMethodTraces.stream().anyMatch(t -> trace.startsWith(t)
+										&& trace.length() > t.length() && (trace.charAt(t.length()) == '.')));
+
+						elementaryClassRefinementTraces
+								.addAll(applySetOperations(minuends, subtrahends, "ClassRefinement"));
+						elementaryClassRefinementTraces
+								.removeIf(trace -> classAndMethodTraces.contains(trace.replace(" Refinement", "")));
+
+						elementaryMethodTraces.addAll(applySetOperations(minuends, subtrahends, "Method"));
+						classAndMethodTraces.addAll(elementaryMethodTraces);
+						elementaryMethodTraces.removeIf(trace -> classAndMethodTraces.contains(trace.split(" ")[0]));
+
+						elementaryMethodRefinementTraces
+								.addAll(applySetOperations(minuends, subtrahends, "MethodRefinement"));
+						elementaryMethodRefinementTraces
+								.removeIf(trace -> classAndMethodTraces.contains(trace.split(" ")[0])
+										|| classAndMethodTraces.contains(trace.replace(" Refinement", "")));
+
+						elementarySetTraces = Stream
+								.of(elementaryClassTraces, elementaryClassRefinementTraces, elementaryMethodTraces,
+										elementaryMethodRefinementTraces)
+								.flatMap(Collection::stream).collect(Collectors.toList());
+						elementarySetTraceMap.put(elementarySet, elementarySetTraces);
+						featureTraces.addAll(elementarySetTraces);
+					}
 				}
 			}
-			setFeatureTraces(featureId, traces);
+			setFeatureTraces(feature, featureTraces);
+			LOGGER.info("Found " + getFeatureTraces(feature).size() + " traces for " + feature);
 		}
 		scenarioHandler.shutdown();
 	}
 
-	private List<String> queryClassQualifiedNameTraces() {
-		List<String> currentVariantTraces = new ArrayList<>();
-		String typeNameQuery = "MATCH (type:Type)" + " WHERE type.fqn STARTS WITH 'org.argouml'"
-				+ " AND NOT (:Type)-[:DECLARES]->(type)" + " AND NOT type.fqn CONTAINS '$'"
-				+ " AND NOT type.fqn CONTAINS 'Anonymous'" + " AND NOT size(type.name) = 1"
-				+ " RETURN DISTINCT type.fqn as type";
-
-		variantHandler.executeQuery(typeNameQuery).forEachRemaining((record) -> {
-			currentVariantTraces.add(TraceIdUtils.getId(record));
-
-		});
-		LOGGER.info("Found " + currentVariantTraces.size() + " qualified class name traces.");
-		return currentVariantTraces;
-	}
-
-	private List<String> queryMethodQualifiedNameTraces() throws IOException {
-		List<String> currentVariantTraces = new ArrayList<>();
-		String methodNameQuery = "MATCH (type:Type)-[:DECLARES]->(method:Method)"
-				+ " WHERE type.fqn STARTS WITH 'org.argouml'" + " AND NOT (:Type)-[:DECLARES]->(type)"
-				+ " AND NOT type.fqn CONTAINS '$'" + " AND NOT type.fqn CONTAINS 'Anonymous'"
-				+ " AND NOT size(type.name) = 1"
-				+ " RETURN DISTINCT type.fqn as type, method.name as method, method.signature as signature";
-
-		variantHandler.executeQuery(methodNameQuery).forEachRemaining((record) -> {
-			currentVariantTraces.add(TraceIdUtils.getId(record));
-
-		});
-		LOGGER.info("Found " + currentVariantTraces.size() + " qualified method name traces.");
-		return currentVariantTraces;
-	}
-
-	private void setFeatureTraces(String featureId, List<String> featureTraces) {
-		featureTraceMap.put(featureId, featureTraces);
-	}
-
-	private List<String> getFeatureTraces(String featureId) {
-		if (featureTraceMap.get(featureId) != null) {
-			return featureTraceMap.get(featureId);
+	public List<String> getFeatureTraces(String feature) {
+		if (featureTraceMap.get(feature) != null) {
+			return featureTraceMap.get(feature);
 		} else {
 			return new ArrayList<>();
 		}
 	}
 
-	private void createTracesFile(String featureId) {
-		// if traces were found, write the results in the file
-		if (!getFeatureTraces(featureId).isEmpty()) {
-			List<String> traces = getFeatureTraces(featureId);
-			Collections.sort(traces);
-			File resultsFolder = new File("yourResults");
-			File ffile = new File(resultsFolder, featureId + ".txt");
-			if (ffile.exists()) {
-				ffile.delete();
-			}
-			for (String trace : traces) {
-				try {
-					FileUtils.appendToFile(ffile, trace);
-				} catch (Exception e) {
-					LOGGER.error(e.getMessage());
-				}
+	private void setFeatureTraces(String feature, List<String> traces) {
+		List<String> featureTraces = featureTraceMap.get(feature);
+		if (featureTraces == null) {
+			featureTraces = new ArrayList<String>();
+			featureTraceMap.put(feature, featureTraces);
+		}
+		for (String trace : traces) {
+			if (!featureTraces.contains(trace)) {
+				featureTraces.add(trace);
 			}
 		}
+	}
+
+	private List<String> applySetOperations(List<String> minuendConfigs, List<String> subtrahendConfigs, String label) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("subtrahendConfigs", subtrahendConfigs);
+
+		// union of subtrahends
+		scenarioHandler
+				.executeQuery("MATCH (config:Configuration)-[:HAS]->(trace:" + label + ") "
+						+ "WHERE config.name IN {subtrahendConfigs} "
+						+ "RETURN collect(DISTINCT ID(trace)) AS subtrahendTraceIds", params)
+				.forEachRemaining(result -> {
+					params.put("subtrahendTraceIds", (List<String>) result.get("subtrahendTraceIds"));
+				});
+
+		// intersection of minuends
+		for (String minuendConfig : minuendConfigs) {
+			if (params.get("traceIds") == null) {
+				scenarioHandler.executeQuery("MATCH (config:Configuration{name:'" + minuendConfig
+						+ "'})-[:HAS]->(trace:" + label + ") " + "WHERE NOT ID(trace) IN {subtrahendTraceIds} "
+						+ "RETURN collect(DISTINCT ID(trace)) AS traceIds", params).forEachRemaining(result -> {
+							params.put("traceIds", (List<String>) result.get("traceIds"));
+						});
+			} else if (!((List<String>) params.get("traceIds")).isEmpty()) {
+				scenarioHandler
+						.executeQuery(
+								"MATCH (config:Configuration{name:'" + minuendConfig + "'})-[:HAS]->(trace:" + label
+										+ ") " + "WHERE NOT ID(trace) IN {subtrahendTraceIds} "
+										+ "WITH collect(DISTINCT ID(trace)) AS minuendTraceIds "
+										+ "RETURN apoc.coll.intersection({traceIds}, minuendTraceIds) AS traceIds",
+								params)
+						.forEachRemaining(result -> {
+							params.put("traceIds", (List<String>) result.get("traceIds"));
+						});
+			} else {
+				return new ArrayList<String>();
+			}
+		}
+		// transform id into trace
+		List<String> traces = new ArrayList<String>();
+		scenarioHandler.executeQuery("MATCH (trace:Trace) " + "WHERE ID(trace) IN {traceIds} "
+				+ "RETURN collect(DISTINCT trace.name) AS traces", params).forEachRemaining(result -> {
+					traces.addAll((List<String>) result.get("traces"));
+				});
+		return traces;
 	}
 }

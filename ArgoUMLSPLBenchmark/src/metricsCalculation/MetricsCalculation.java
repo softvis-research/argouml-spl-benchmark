@@ -25,7 +25,7 @@ public class MetricsCalculation {
 
 	public static void main(String[] args) {
 		System.out.println("Metrics calculation");
-		File groundTruth = new File("prunedGroundTruth");// changed to prunedGroundTruth
+		File groundTruth = new File("groundTruth");// changed back to groundTruth
 		File yourResults = new File("yourResults");
 		File yourResultsMetrics = new File("yourResultsMetrics");
 		String results = getResults(groundTruth, yourResults);
@@ -42,7 +42,7 @@ public class MetricsCalculation {
 		System.out.println("set style data boxplot");
 		System.out.println("set datafile sep ','");
 		System.out.println("set style boxplot outliers pointtype 6");
-		System.out.println("set style fill empty");
+		System.out.println("set style fill empty"); 
 		System.out.println("set xtics ('Names' 1, 'Precision' 2, 'Recall' 3, 'FScore' 4) scale 0.0");
 		System.out.println("set yrange [-0.04:1.04]");
 		System.out.println("set title \"Actual features where nothing was retrieved= " + (int) failedToRetrieve_counter
@@ -54,8 +54,8 @@ public class MetricsCalculation {
 				+ "' every ::1::24 using (i):i notitle pointsize .8 lc rgb 'black'");
 	}
 
-	static int retrievedInexistentFeature_counter;
-	static double failedToRetrieve_counter;
+	public static int retrievedInexistentFeature_counter;
+	public static double failedToRetrieve_counter;
 
 	/**
 	 * Create results file and store it in the actual folder parent folder

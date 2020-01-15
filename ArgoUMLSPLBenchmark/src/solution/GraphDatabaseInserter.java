@@ -20,13 +20,15 @@ import org.neo4j.unsafe.batchinsert.BatchInserters;
  * @author Richard Mueller
  *
  */
-public class GraphDatabaseInserter extends GraphDatabaseHandler{
+public class GraphDatabaseInserter extends GraphDatabaseHandler {
 
 	private Map<String, Long> configurationNodeIdMap = null;
-	private Map<String, Long> featureNodeIdMap = null;
 	private Map<String, Long> classTraceIdMap = null;
 	private Map<String, Long> methodTraceIdMap = null;
-	
+	private Map<String, Long> fieldTraceIdMap = null;
+	private Map<String, Long> importTraceIdMap = null;
+	private Map<String, Long> methodRefinementTraceIdMap = null;
+
 	public GraphDatabaseInserter(File dbFolder) throws RuntimeException, IOException {
 		super(dbFolder);
 		// delete old trace graph
@@ -36,79 +38,127 @@ public class GraphDatabaseInserter extends GraphDatabaseHandler{
 			start();
 		}
 		this.configurationNodeIdMap = new HashMap<>();
-		this.featureNodeIdMap = new HashMap<>();
 		this.classTraceIdMap = new HashMap<>();
 		this.methodTraceIdMap = new HashMap<>();
+		this.fieldTraceIdMap = new HashMap<>();
+		this.importTraceIdMap = new HashMap<>();
+		this.methodRefinementTraceIdMap = new HashMap<>();
 	}
-	
-	/**
-	 * Create a trace graph.
-	 * 
-	 * @param configurationId
-	 * @param currentVariantTraces
-	 * @param label
-	 * @param refinement
-	 * @throws IOException
-	 */
-	public void createTraceGraph(String configurationId, List<String> currentVariantTraces, String label,
-			boolean refinement) throws IOException {
+
+	public void createConfigurations(List<String> configurations) throws IOException {
 		shutdown();
 		BatchInserter inserter = null;
 		try {
 			inserter = BatchInserters.inserter(getDbFolder());
-			for (String currentVariantTrace : currentVariantTraces) {
-				if (label.equals("Class")) {
-					if (classTraceIdMap.containsKey(currentVariantTrace)) {
-						// (Configuration)-[:HAS]->(Trace:Class)
-						inserter.createRelationship(configurationNodeIdMap.get(configurationId),
-								classTraceIdMap.get(currentVariantTrace), RelationshipType.withName("HAS"), null);
-					} else {
-						// create (Trace:Class)
-						Long classTraceNodeId = inserter.createNode(map("value", currentVariantTrace), label("Trace"),
-								label(label));
-						// (Configuration)-[:HAS]->(Trace:Class)
-						inserter.createRelationship(configurationNodeIdMap.get(configurationId), classTraceNodeId,
-								RelationshipType.withName("HAS"), null);
-						classTraceIdMap.put(currentVariantTrace, classTraceNodeId);
-					}
-				} else if (label.equals("Method")) {
-					String classTrace = currentVariantTrace.split(" ")[0];
-					if (classTraceIdMap.containsKey(classTrace)) {
-						if (methodTraceIdMap.containsKey(currentVariantTrace)) {
-							// (Configuration)-[:HAS]->(Trace:Method)
-							inserter.createRelationship(configurationNodeIdMap.get(configurationId),
-									methodTraceIdMap.get(currentVariantTrace), RelationshipType.withName("HAS"), null);
-						} else {
-							// create (Trace:Method)
-							Long methodTraceNodeId = inserter.createNode(map("value", currentVariantTrace),
-									label("Trace"), label(label));
-							// (Configuration)-[:HAS]->(Trace:Method)
-							inserter.createRelationship(configurationNodeIdMap.get(configurationId), methodTraceNodeId,
-									RelationshipType.withName("HAS"), null);
-							methodTraceIdMap.put(currentVariantTrace, methodTraceNodeId);
-							// (Trace:Class)-[:DECLARES]->(Trace:Method)
-							inserter.createRelationship(classTraceIdMap.get(classTrace), methodTraceNodeId,
-									RelationshipType.withName("DECLARES"), null);
-						}
-					} else {
-						// create (Trace:Class)
-						Long classTraceNodeId = inserter.createNode(map("value", currentVariantTrace), label("Trace"),
-								label(label));
-						// (Configuration)-[:HAS]->(Trace:Class)
-						inserter.createRelationship(configurationNodeIdMap.get(configurationId), classTraceNodeId,
-								RelationshipType.withName("HAS"), null);
-						classTraceIdMap.put(currentVariantTrace, classTraceNodeId);
-						// create (Trace:Method)
-						Long methodTraceNodeId = inserter.createNode(map("value", currentVariantTrace), label("Trace"),
-								label(label));
-						// (Configuration)-[:HAS]->(Trace:Method)
-						inserter.createRelationship(configurationNodeIdMap.get(configurationId), methodTraceNodeId,
-								RelationshipType.withName("HAS"), null);
-						methodTraceIdMap.put(currentVariantTrace, methodTraceNodeId);
-						// (Trace:Class)-[:DECLARES]->(Trace:Method)
-						inserter.createRelationship(classTraceIdMap.get(classTrace), methodTraceNodeId,
-								RelationshipType.withName("DECLARES"), null);
-					}
+			for (String configuration : configurations) {
+				// create (Configuration)
+				Long configurationNodeId = inserter.createNode(map("name", configuration, "value", configuration),
+						label("Configuration"));
+				configurationNodeIdMap.put(configuration, configurationNodeId);
+			}
+		} finally {
+			if (inserter != null) {
+				inserter.shutdown();
+			}
+		}
+	}
+
+	public void createTraces(String configuration, Map<String, List<String>> traces) throws IOException {
+		shutdown();
+		BatchInserter inserter = null;
+		try {
+			inserter = BatchInserters.inserter(getDbFolder());
+			// class traces
+			List<String> classTraces = traces.get("class");
+			for (String classTrace : classTraces) {
+				if (classTraceIdMap.containsKey(classTrace)) {
+					// (Configuration)-[:HAS]->(Trace:Class)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration),
+							classTraceIdMap.get(classTrace), RelationshipType.withName("HAS"), null);
+				} else {
+					// create (Trace:Class)
+					Long classTraceNodeId = inserter.createNode(map("name", classTrace, "value", classTrace),
+							label("Trace"), label("Class"));
+					// (Configuration)-[:HAS]->(Trace:Class)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration), classTraceNodeId,
+							RelationshipType.withName("HAS"), null);
+					classTraceIdMap.put(classTrace, classTraceNodeId);
+				}
+			}
+			// field traces
+			List<String> fieldTraces = traces.get("field");
+			for (String fieldTrace : fieldTraces) {
+				String[] field = fieldTrace.split("__");
+				if (fieldTraceIdMap.containsKey(fieldTrace)) {
+					// (Configuration)-[:HAS]->(Trace:Field:ClassRefinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration),
+							fieldTraceIdMap.get(fieldTrace), RelationshipType.withName("HAS"), null);
+				} else {
+					// create (Trace:Field:ClassRefinement)
+					Long fieldTraceNodeId = inserter.createNode(
+							map("name", field[0] + " Refinement", "value", fieldTrace), label("Trace"),
+							label("ClassRefinement"), label("Field"));
+					// (Configuration)-[:HAS]->(Trace:Field:Refinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration), fieldTraceNodeId,
+							RelationshipType.withName("HAS"), null);
+					fieldTraceIdMap.put(fieldTrace, fieldTraceNodeId);
+				}
+			}
+			// import traces
+			List<String> importTraces = traces.get("import");
+			for (String importTrace : importTraces) {
+				String[] imp = importTrace.split("__");
+				if (importTraceIdMap.containsKey(importTrace)) {
+					// (Configuration)-[:HAS]->(Trace:Import:ClassRefinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration),
+							importTraceIdMap.get(importTrace), RelationshipType.withName("HAS"), null);
+				} else {
+					// create (Trace:Import:ClassRefinement)
+					Long importTraceNodeId = inserter.createNode(
+							map("name", imp[0] + " Refinement", "value", importTrace), label("Trace"),
+							label("ClassRefinement"), label("Import"));
+					// (Configuration)-[:HAS]->(Trace:Import:ClassRefinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration), importTraceNodeId,
+							RelationshipType.withName("HAS"), null);
+					importTraceIdMap.put(importTrace, importTraceNodeId);
+				}
+			}
+			// method traces
+			List<String> methodTraces = traces.get("method");
+			for (String methodTrace : methodTraces) {
+				String[] method = methodTrace.split("__");
+				if (methodTraceIdMap.containsKey(methodTrace)) {
+					// (Configuration)-[:HAS]->(Trace:Method)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration),
+							methodTraceIdMap.get(methodTrace), RelationshipType.withName("HAS"), null);
+				} else {
+					// create (Trace:Method)
+					Long methodTraceNodeId = inserter.createNode(
+							map("name", method[0] + " " + method[1], "value", methodTrace), label("Trace"),
+							label("Method"));
+					// (Configuration)-[:HAS]->(Trace:Method)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration), methodTraceNodeId,
+							RelationshipType.withName("HAS"), null);
+					methodTraceIdMap.put(methodTrace, methodTraceNodeId);
+				}
+			}
+			// statement traces
+			List<String> statementTraces = traces.get("statement");
+			for (String statementTrace : statementTraces) {
+				if (methodRefinementTraceIdMap.containsKey(statementTrace)) {
+					// (Configuration)-[:HAS]->(Trace:Statement:MethodRefinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration),
+							methodRefinementTraceIdMap.get(statementTrace), RelationshipType.withName("HAS"), null);
+				} else {
+					// create (Trace:Statement)
+					String[] statement = statementTrace.split("__");
+					Long methodRefinementTraceNodeId = inserter.createNode(
+							map("name", statement[0] + " " + statement[1] + " Refinement", "value", statementTrace),
+							label("Trace"), label("MethodRefinement"), label("Statement"));
+					// (Configuration)-[:HAS]->(Trace:Statement:MethodRefinement)
+					inserter.createRelationship(configurationNodeIdMap.get(configuration), methodRefinementTraceNodeId,
+							RelationshipType.withName("HAS"), null);
+					methodRefinementTraceIdMap.put(statementTrace, methodRefinementTraceNodeId);
 				}
 			}
 		} finally {
@@ -116,58 +166,5 @@ public class GraphDatabaseInserter extends GraphDatabaseHandler{
 				inserter.shutdown();
 			}
 		}
-	}
-
-	/**
-	 * Create configuration node.
-	 * 
-	 * @param configurationId
-	 * @param featureIds
-	 * @throws IOException
-	 */
-	public void createConfigurationNode(String configurationId, List<String> featureIds) throws IOException {
-		shutdown();
-		BatchInserter inserter = null;
-		try {
-			inserter = BatchInserters.inserter(getDbFolder());
-			Long configurationNodeId = inserter.createNode(
-					map("name", configurationId, "value",
-							featureIds.toString().replaceAll(", ", "_and_").replace("[", "").replace("]", "")),
-					label("Configuration"));
-			configurationNodeIdMap.put(configurationId, configurationNodeId);
-			// (Configuration)-[:HAS]->(Feature)
-			for (String featureId : featureIds) {
-				inserter.createRelationship(configurationNodeIdMap.get(configurationId),
-						featureNodeIdMap.get(featureId), RelationshipType.withName("HAS"), null);
-			}
-		} finally {
-			if (inserter != null) {
-				inserter.shutdown();
-			}
-		}
-	}
-
-	/**
-	 * Create feature nodes.
-	 * 
-	 * @param featureIds
-	 * @throws IOException
-	 */
-	public void createFeatureNodes(List<String> featureIds) throws IOException {
-		shutdown();
-		BatchInserter inserter = null;
-		try {
-			inserter = BatchInserters.inserter(getDbFolder());
-			for (String featureId : featureIds) {
-				Long featureNode = inserter.createNode(map("name", featureId), label("Feature"));
-				featureNodeIdMap.put(featureId, featureNode);
-			}
-			
-		} finally {
-			if (inserter != null) {
-				inserter.shutdown();
-			}
-		}
-
 	}
 }
