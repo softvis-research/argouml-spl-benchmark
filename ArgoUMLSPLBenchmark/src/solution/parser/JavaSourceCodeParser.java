@@ -20,7 +20,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 
-import solution.GraphDatabaseInserter;
+import solution.neo4j.GraphDatabaseInserter;
 import solution.parser.visitor.TypeVisitor;
 import utils.FileUtils;
 

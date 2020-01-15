@@ -1,4 +1,4 @@
-package utils;
+package solution.set;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Richard Müller
  *
  */
-public class SetUtils {
+public class SetCalculator {
 	int numberOfFeatures = 0;
 	int numberOfVariants = 0;
 	private List<String> elementarySets = null;
@@ -18,7 +18,7 @@ public class SetUtils {
 	private Map<String, List<String>> minuendSets = null;
 	private Map<String, List<String>> subtrahendSets = null;
 
-	public SetUtils(int numberOfFeatures) {
+	public SetCalculator(int numberOfFeatures) {
 		this.numberOfFeatures = numberOfFeatures;
 		this.numberOfVariants = (int) Math.pow(2, this.numberOfFeatures);
 		this.elementarySets = new ArrayList<String>();

@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import solution.set.SetCalculator;
+
 /**
  * Feature Utils
  * 
@@ -28,7 +30,7 @@ public class FeatureUtils {
 	Map<String, File> mapConfigVariantFolder = new LinkedHashMap<String, File>();
 	Map<String, String> mapFeatureIds = new LinkedHashMap<String, String>();
 	Map<String, String> mapConfigIds = new LinkedHashMap<String, String>();
-	SetUtils setUtils = null;
+	SetCalculator setUtils = null;
 
 	/**
 	 *
@@ -125,7 +127,7 @@ public class FeatureUtils {
 		}
 
 		// solve scenario
-		setUtils = new SetUtils(getFeatureIds().size());
+		setUtils = new SetCalculator(getFeatureIds().size());
 	}
 
 	/**

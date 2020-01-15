@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import metricsCalculation.MetricsCalculation;
+import solution.technique.GraphBasedFeatureLocationTechnique;
 import utils.FileUtils;
 
 /**
