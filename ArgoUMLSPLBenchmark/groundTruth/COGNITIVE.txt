@@ -145,7 +145,7 @@ org.argouml.profile.Profile Refinement
 org.argouml.profile.Profile getCritics()
 org.argouml.profile.Profile setCritics(Set<Critic>)
 org.argouml.profile.UserDefinedProfile Refinement
-org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<Critic>,Set<String>) Refinement
+org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<Critic>,Set<String>)
 org.argouml.profile.UserDefinedProfile finishLoading() Refinement
 org.argouml.profile.UserDefinedProfile generateCriticFromComment(Object)
 org.argouml.profile.UserDefinedProfile str2KnowledgeType(String)
