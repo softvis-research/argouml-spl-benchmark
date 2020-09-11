@@ -221,7 +221,6 @@ org.argouml.profile.StreamModelLoader loadModel(InputStream,URL) Refinement
 org.argouml.profile.UserDefinedProfile Refinement
 org.argouml.profile.UserDefinedProfile UserDefinedProfile(File) Refinement
 org.argouml.profile.UserDefinedProfile UserDefinedProfile(URL) Refinement
-org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<Critic>,Set<String>) Refinement
 org.argouml.profile.UserDefinedProfile finishLoading() Refinement
 org.argouml.profile.ZipModelLoader Refinement
 org.argouml.profile.ZipModelLoader loadModel(ProfileReference) Refinement

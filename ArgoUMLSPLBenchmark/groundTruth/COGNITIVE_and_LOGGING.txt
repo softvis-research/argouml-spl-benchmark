@@ -114,3 +114,4 @@ org.argouml.uml.cognitive.critics.WizNavigable Refinement
 org.argouml.uml.cognitive.critics.WizNavigable doAction(int) Refinement
 org.argouml.uml.cognitive.critics.WizOperName Refinement
 org.argouml.uml.cognitive.critics.WizOperName doAction(int) Refinement
+org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<Critic>,Set<String>) Refinement

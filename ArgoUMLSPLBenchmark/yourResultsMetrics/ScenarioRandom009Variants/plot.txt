@@ -1,0 +1,9 @@
+cd 'E:\argouml-spl-benchmark\ArgoUMLSPLBenchmark\yourResultsMetrics\ScenarioRandom009Variants'
+set style data boxplot
+set datafile sep ','
+set style boxplot outliers pointtype 6
+set style fill empty
+set xtics ('Names' 1, 'Precision' 2, 'Recall' 3, 'FScore' 4) scale 0.0
+set yrange [-0.04:1.04]
+set title "Actual features where nothing was retrieved= 2 out of 24\nInexistent features where something was retrieved= 0\nMetrics for actual features:"
+plot for [i=2:4] 'resultPrecisionRecall.csv' every ::1::24 using (i):i notitle pointsize .8 lc rgb 'black'

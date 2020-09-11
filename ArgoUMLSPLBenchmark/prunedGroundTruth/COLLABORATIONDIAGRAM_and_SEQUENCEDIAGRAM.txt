@@ -1,4 +1,0 @@
-org.argouml.sequence2.diagram.ActionAddClassifierRole makeNode()
-org.argouml.sequence2.diagram.SequenceDiagramGraphModel getCollaboration()
-org.argouml.sequence2.diagram.SequenceDiagramGraphModel setCollaboration(Object)
-org.argouml.sequence2.diagram.UMLSequenceDiagram getCollaboration()
