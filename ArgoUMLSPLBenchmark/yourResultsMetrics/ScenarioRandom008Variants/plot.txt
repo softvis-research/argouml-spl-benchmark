@@ -1,4 +1,4 @@
-cd 'E:\argouml-spl-benchmark\ArgoUMLSPLBenchmark\yourResultsMetrics\ScenarioRandom008Variants'
+cd 'F:\argouml-spl-benchmark\ArgoUMLSPLBenchmark\yourResultsMetrics\ScenarioRandom008Variants'
 set style data boxplot
 set datafile sep ','
 set style boxplot outliers pointtype 6
