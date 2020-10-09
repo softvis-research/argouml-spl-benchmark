@@ -1,0 +1,5 @@
+org.argouml.cognitive.ui.DismissToDoItemDialog DismissToDoItemDialog() Refinement
+org.argouml.uml.cognitive.critics.CrNodesOverlap Refinement
+org.argouml.uml.cognitive.critics.CrNodesOverlap predicate2(Object,Designer) Refinement
+org.argouml.uml.cognitive.critics.CrSeqInstanceWithoutClassifier
+org.argouml.uml.cognitive.critics.ProfileGoodPractices ProfileGoodPractices() Refinement

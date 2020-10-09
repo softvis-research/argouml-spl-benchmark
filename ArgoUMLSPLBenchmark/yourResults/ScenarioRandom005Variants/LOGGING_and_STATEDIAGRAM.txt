@@ -1,0 +1,7 @@
+org.argouml.persistence.ModelMemberFilePersister registerDiagramsInternal(Project,Collection,boolean) Refinement
+org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<String>) Refinement
+org.argouml.uml.diagram.state.ui.FigStubState Refinement
+org.argouml.uml.diagram.state.ui.FigStubState updateReferenceText() Refinement
+org.argouml.uml.diagram.state.ui.UMLStateDiagram Refinement
+org.argouml.uml.diagram.state.ui.UMLStateDiagram drop(Object,Point) Refinement
+org.argouml.uml.diagram.state.ui.UMLStateDiagram nameDiagram(Object) Refinement

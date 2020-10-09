@@ -1,0 +1,110 @@
+org.argouml.application.LoadModules Refinement
+org.argouml.application.Main Refinement
+org.argouml.application.Main initializeGUI(SplashScreen) Refinement
+org.argouml.application.Main initializeSubsystems(SimpleTimer,SplashScreen) Refinement
+org.argouml.application.PostLoad Refinement
+org.argouml.application.helpers.ResourceLoaderWrapper lookupIcon(Object) Refinement
+org.argouml.model.mdr.CoreHelperMDRImpl getAllMetaDatatypeNames() Refinement
+org.argouml.model.mdr.CoreHelperMDRImpl getAllMetatypeNames() Refinement
+org.argouml.model.mdr.ModelEventPumpMDRImpl buildTypeMap(ModelPackage) Refinement
+org.argouml.persistence.ModelMemberFilePersister registerDiagramsInternal(Project,Collection,boolean) Refinement
+org.argouml.persistence.ZargoFilePersister readerToWriter(Reader,Writer) Refinement
+org.argouml.profile.UserDefinedProfile UserDefinedProfile(String,URL,Set<String>)
+org.argouml.ui.cmd.GenericArgoMenuBar Refinement
+org.argouml.ui.cmd.GenericArgoMenuBar initMenuCreate() Refinement
+org.argouml.ui.cmd.ShortcutMgr Refinement
+org.argouml.ui.explorer.ExplorerPopup ExplorerPopup(Object,MouseEvent) Refinement
+org.argouml.ui.explorer.ExplorerPopup Refinement
+org.argouml.ui.explorer.ExplorerPopup initMenuCreateDiagrams() Refinement
+org.argouml.ui.explorer.PerspectiveManager Refinement
+org.argouml.ui.explorer.PerspectiveManager getDefaultPerspectives() Refinement
+org.argouml.ui.explorer.PerspectiveManager loadRules() Refinement
+org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateDiagram
+org.argouml.ui.explorer.rules.GoClassifierToCollaboration
+org.argouml.ui.explorer.rules.GoClassifierToStateMachine
+org.argouml.ui.explorer.rules.GoCollaborationToDiagram
+org.argouml.ui.explorer.rules.GoCollaborationToInteraction
+org.argouml.ui.explorer.rules.GoCompositeStateToSubvertex
+org.argouml.ui.explorer.rules.GoModelToCollaboration
+org.argouml.ui.explorer.rules.GoNamespaceToDiagram Refinement
+org.argouml.ui.explorer.rules.GoNamespaceToDiagram getChildren(Object) Refinement
+org.argouml.ui.explorer.rules.GoOperationToCollaboration
+org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram
+org.argouml.ui.explorer.rules.GoProjectToCollaboration
+org.argouml.ui.explorer.rules.GoProjectToStateMachine
+org.argouml.ui.explorer.rules.GoStateMachineToState
+org.argouml.ui.explorer.rules.GoStateMachineToTop
+org.argouml.ui.explorer.rules.GoStateMachineToTransition
+org.argouml.ui.explorer.rules.GoStateToIncomingTrans
+org.argouml.ui.explorer.rules.GoStateToOutgoingTrans
+org.argouml.ui.explorer.rules.GoStatemachineToDiagram
+org.argouml.uml.diagram.DiagramFactory DiagramFactory() Refinement
+org.argouml.uml.diagram.DiagramFactory Refinement
+org.argouml.uml.diagram.DiagramFactory createDiagram(Class,Object,Object) Refinement
+org.argouml.uml.diagram.DiagramFactory createInternal(DiagramType,Object,Object,DiagramSettings) Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer getFigEdgeFor(Object,Map) Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer getFigNodeFor(Object,int,int,Map) Refinement
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram Refinement
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram drop(Object,Point) Refinement
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram encloserChanged(FigNode,FigNode,FigNode) Refinement
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionCallEvent()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionChangeEvent()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionForkPseudoState()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionJoinPseudoState()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionJunctionPseudoState()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionSignalEvent()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionStartPseudoState()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getActionTimeEvent()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getStateMachine() Refinement
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getTriggerActions()
+org.argouml.uml.diagram.activity.ui.UMLActivityDiagram getUmlActions() Refinement
+org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel
+org.argouml.uml.diagram.collaboration.ui.ActionAddClassifierRole
+org.argouml.uml.diagram.collaboration.ui.CollabDiagramRenderer
+org.argouml.uml.diagram.collaboration.ui.CollaborationDiagramPropPanelFactory
+org.argouml.uml.diagram.collaboration.ui.FigAssociationRole
+org.argouml.uml.diagram.collaboration.ui.FigClassifierRole
+org.argouml.uml.diagram.collaboration.ui.FigMessageGroup
+org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram
+org.argouml.uml.diagram.collaboration.ui.PropPanelUMLCollaborationDiagram
+org.argouml.uml.diagram.collaboration.ui.SelectionClassifierRole
+org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram
+org.argouml.uml.diagram.state.PredIsFinalState
+org.argouml.uml.diagram.state.PredIsStartState
+org.argouml.uml.diagram.state.ui.ActionCreatePseudostate
+org.argouml.uml.diagram.state.ui.ButtonActionNewEffect
+org.argouml.uml.diagram.state.ui.FigBranchState
+org.argouml.uml.diagram.state.ui.FigCompositeState
+org.argouml.uml.diagram.state.ui.FigConcurrentRegion
+org.argouml.uml.diagram.state.ui.FigDeepHistoryState
+org.argouml.uml.diagram.state.ui.FigFinalState makeSelection() Refinement
+org.argouml.uml.diagram.state.ui.FigForkState
+org.argouml.uml.diagram.state.ui.FigHistoryState
+org.argouml.uml.diagram.state.ui.FigInitialState
+org.argouml.uml.diagram.state.ui.FigJoinState
+org.argouml.uml.diagram.state.ui.FigJunctionState
+org.argouml.uml.diagram.state.ui.FigShallowHistoryState
+org.argouml.uml.diagram.state.ui.FigSimpleState
+org.argouml.uml.diagram.state.ui.FigState
+org.argouml.uml.diagram.state.ui.FigStateVertex makeSelection() Refinement
+org.argouml.uml.diagram.state.ui.FigStubState
+org.argouml.uml.diagram.state.ui.FigSubmachineState
+org.argouml.uml.diagram.state.ui.FigSynchState
+org.argouml.uml.diagram.state.ui.InitStateDiagram
+org.argouml.uml.diagram.state.ui.PropPanelUMLStateDiagram
+org.argouml.uml.diagram.state.ui.SelectionState
+org.argouml.uml.diagram.state.ui.StateDiagramPropPanelFactory
+org.argouml.uml.diagram.state.ui.UMLStateDiagram
+org.argouml.uml.diagram.ui.ActionAddConcurrentRegion Refinement
+org.argouml.uml.diagram.ui.ActionAddConcurrentRegion actionPerformed(ActionEvent) Refinement
+org.argouml.uml.diagram.ui.ActionAddMessage addMessage(Object) Refinement
+org.argouml.uml.diagram.ui.FigAssociation paint(Graphics) Refinement
+org.argouml.uml.diagram.ui.FigMessage Refinement
+org.argouml.uml.diagram.ui.FigMessage addPathItemToFigAssociationRole(Layer)
+org.argouml.uml.ui.ActionCollaborationDiagram
+org.argouml.uml.ui.ActionStateDiagram
+org.argouml.uml.ui.behavior.activity_graphs.ActionNewEntryCallAction actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.PropPanelTransition PropPanelTransition() Refinement
+org.argouml.uml.ui.behavior.state_machines.PropPanelTransition Refinement
+org.argouml.uml.ui.behavior.state_machines.PropPanelTransition getTriggerActions()

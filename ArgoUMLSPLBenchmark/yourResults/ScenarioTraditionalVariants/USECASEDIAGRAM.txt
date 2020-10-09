@@ -1,0 +1,146 @@
+org.argouml.application.LoadModules Refinement
+org.argouml.application.Main Refinement
+org.argouml.application.Main initializeSubsystems(SimpleTimer,SplashScreen) Refinement
+org.argouml.application.PostLoad Refinement
+org.argouml.kernel.ProjectManager createDefaultDiagrams(Project) Refinement
+org.argouml.notation.NotationProviderFactory2 Refinement
+org.argouml.notation.providers.uml.AbstractMessageNotationUml buildAction(Object) Refinement
+org.argouml.notation.providers.uml.AbstractMessageNotationUml handlePredecessors(Object,List<List>,boolean) Refinement
+org.argouml.notation.providers.uml.AbstractMessageNotationUml handleSequenceNumber(Object,List<Integer>,boolean) Refinement
+org.argouml.notation.providers.uml.AbstractMessageNotationUml insertSuccessor(Object,Object,int) Refinement
+org.argouml.notation.providers.uml.AssociationRoleNotationUml parseRole(Object,String) Refinement
+org.argouml.notation.providers.uml.CallStateNotationUml parseCallState(Object,String) Refinement
+org.argouml.notation.providers.uml.ClassifierRoleNotationUml parseClassifierRole(Object,String) Refinement
+org.argouml.notation.providers.uml.ExtensionPointNotationUml parseExtensionPoint(String)
+org.argouml.notation.providers.uml.ExtensionPointNotationUml parseExtensionPointFig(Object,String) Refinement
+org.argouml.notation.providers.uml.InitNotationUml init() Refinement
+org.argouml.notation.providers.uml.StateBodyNotationUml
+org.argouml.notation.providers.uml.TransitionNotationUml Refinement
+org.argouml.notation.providers.uml.TransitionNotationUml parseEffect(Object,String) Refinement
+org.argouml.notation.providers.uml.TransitionNotationUml parseGuard(Object,String) Refinement
+org.argouml.notation.providers.uml.TransitionNotationUml parseTrigger(Object,String) Refinement
+org.argouml.ui.cmd.GenericArgoMenuBar Refinement
+org.argouml.ui.cmd.GenericArgoMenuBar initMenuCreate() Refinement
+org.argouml.ui.cmd.ShortcutMgr Refinement
+org.argouml.ui.explorer.ExplorerPopup Refinement
+org.argouml.ui.explorer.ExplorerPopup initMenuCreateDiagrams() Refinement
+org.argouml.ui.explorer.rules.GoStateToDownstream getChildren(Object) Refinement
+org.argouml.uml.diagram.DiagramFactory DiagramFactory() Refinement
+org.argouml.uml.diagram.DiagramFactory Refinement
+org.argouml.uml.diagram.DiagramFactory createDiagram(Class,Object,Object) Refinement
+org.argouml.uml.diagram.DiagramFactory createInternal(DiagramType,Object,Object,DiagramSettings) Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer getFigEdgeFor(Object,Map) Refinement
+org.argouml.uml.diagram.UmlDiagramRenderer getFigNodeFor(Object,int,int,Map) Refinement
+org.argouml.uml.diagram.state.StateDiagramGraphModel
+org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent
+org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent
+org.argouml.uml.diagram.state.ui.ButtonActionNewEvent
+org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent
+org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent
+org.argouml.uml.diagram.state.ui.FigFinalState
+org.argouml.uml.diagram.state.ui.FigStateVertex
+org.argouml.uml.diagram.state.ui.FigTransition
+org.argouml.uml.diagram.state.ui.StateDiagramRenderer
+org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram Refinement
+org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram doesAccept(Object) Refinement
+org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram drop(Object,Point) Refinement
+org.argouml.uml.diagram.ui.ActionAddConcurrentRegion Refinement
+org.argouml.uml.diagram.ui.ActionAddConcurrentRegion isEnabled() Refinement
+org.argouml.uml.diagram.ui.ActionAddExtensionPoint actionPerformed(ActionEvent) Refinement
+org.argouml.uml.diagram.ui.ActionCompartmentDisplay Refinement
+org.argouml.uml.diagram.ui.ActionCompartmentDisplay actionPerformed(ActionEvent) Refinement
+org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel
+org.argouml.uml.diagram.use_case.ui.FigActor
+org.argouml.uml.diagram.use_case.ui.FigExtend
+org.argouml.uml.diagram.use_case.ui.FigInclude
+org.argouml.uml.diagram.use_case.ui.FigUseCase
+org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram
+org.argouml.uml.diagram.use_case.ui.PropPanelUMLUseCaseDiagram
+org.argouml.uml.diagram.use_case.ui.SelectionActor
+org.argouml.uml.diagram.use_case.ui.SelectionUseCase
+org.argouml.uml.diagram.use_case.ui.StylePanelFigUseCase
+org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram
+org.argouml.uml.diagram.use_case.ui.UseCaseDiagramPropPanelFactory
+org.argouml.uml.diagram.use_case.ui.UseCaseDiagramRenderer
+org.argouml.uml.ui.AbstractActionAddModelElement2 actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.ActionDeleteModelElements shouldBeEnabled() Refinement
+org.argouml.uml.ui.ActionNewDiagram createCollaboration(Object)
+org.argouml.uml.ui.ActionUseCaseDiagram
+org.argouml.uml.ui.ElementPropPanelFactory Refinement
+org.argouml.uml.ui.ElementPropPanelFactory createPropPanel(Object) Refinement
+org.argouml.uml.ui.ElementPropPanelFactory getClassifierPropPanel(Object) Refinement
+org.argouml.uml.ui.ElementPropPanelFactory getRelationshipPropPanel(Object) Refinement
+org.argouml.uml.ui.ElementPropPanelFactory getStateVertexPropPanel(Object) Refinement
+org.argouml.uml.ui.UMLConditionExpressionModel setExpression(Object) Refinement
+org.argouml.uml.ui.UMLExpressionExpressionModel setExpression(Object) Refinement
+org.argouml.uml.ui.UMLTimeExpressionModel setExpression(Object) Refinement
+org.argouml.uml.ui.behavior.activity_graphs.ActionAddEventAsTrigger doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase getChoices() Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor getChoices() Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionSetAssociationRoleBase actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionSetRepresentedClassifierCollaboration actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.collaborations.ActionSetRepresentedOperationCollaboration actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLAssociationRoleBaseComboBoxModel buildModelList() Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLAssociationRoleBaseComboBoxModel isValidElement(Object) Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLClassifierRoleAvailableContentsListModel buildModelList() Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLClassifierRoleAvailableFeaturesListModel buildModelList() Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLMessageActivatorComboBox doIt(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.collaborations.UMLMessageActivatorComboBoxModel buildModelList() Refinement
+org.argouml.uml.ui.behavior.common_behavior.ActionNewAction actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.common_behavior.PropPanelStimulus setSender(Object) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionAddEventAsDeferrableEvent doIt(Collection) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewCallEvent createEvent(Object)
+org.argouml.uml.ui.behavior.state_machines.ActionNewChangeEvent createEvent(Object)
+org.argouml.uml.ui.behavior.state_machines.ActionNewCompositeState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewEvent actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewEvent createEvent(Object)
+org.argouml.uml.ui.behavior.state_machines.ActionNewFinalState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewGuard actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewPseudoState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewSignalEvent createEvent(Object)
+org.argouml.uml.ui.behavior.state_machines.ActionNewSimpleState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewStubState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewSubmachineState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewSynchState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewTimeEvent createEvent(Object)
+org.argouml.uml.ui.behavior.state_machines.ActionNewTransition actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionNewTransition isEnabled() Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionSetCompositeStateConcurrent actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionSetStubStateReferenceState actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmachine actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.ButtonActionNewGuard actionPerformed(ActionEvent) Refinement
+org.argouml.uml.ui.behavior.state_machines.PropPanelStubState
+org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState PropPanelSubmachineState() Refinement
+org.argouml.uml.ui.behavior.state_machines.PropPanelSynchState
+org.argouml.uml.ui.behavior.state_machines.UMLChangeExpressionModel setExpression(Object) Refinement
+org.argouml.uml.ui.behavior.state_machines.UMLStubStateComboBoxModel
+org.argouml.uml.ui.behavior.state_machines.UMLSubmachineStateComboBoxModel
+org.argouml.uml.ui.behavior.state_machines.UMLSynchStateBoundDocument
+org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint
+org.argouml.uml.ui.behavior.use_cases.ActionNewActor
+org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint
+org.argouml.uml.ui.behavior.use_cases.ActionNewExtensionPoint
+org.argouml.uml.ui.behavior.use_cases.ActionNewUseCase
+org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint
+org.argouml.uml.ui.behavior.use_cases.PropPanelActor
+org.argouml.uml.ui.behavior.use_cases.PropPanelExtend
+org.argouml.uml.ui.behavior.use_cases.PropPanelExtensionPoint
+org.argouml.uml.ui.behavior.use_cases.PropPanelInclude
+org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase
+org.argouml.uml.ui.behavior.use_cases.UMLExtendBaseListModel
+org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionListModel
+org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionPointListModel
+org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointExtendListModel
+org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointLocationDocument
+org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointUseCaseListModel
+org.argouml.uml.ui.behavior.use_cases.UMLIncludeAdditionListModel
+org.argouml.uml.ui.behavior.use_cases.UMLIncludeBaseListModel
+org.argouml.uml.ui.behavior.use_cases.UMLIncludeListModel
+org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtendListModel
+org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtensionPointListModel
+org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel

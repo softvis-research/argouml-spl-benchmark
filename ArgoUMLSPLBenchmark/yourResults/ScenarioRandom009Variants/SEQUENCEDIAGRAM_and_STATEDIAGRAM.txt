@@ -1,0 +1,2 @@
+org.argouml.cognitive.ui.DismissToDoItemDialog DismissToDoItemDialog() Refinement
+org.argouml.ui.explorer.rules.GoNamespaceToDiagram getChildren(Object) Refinement

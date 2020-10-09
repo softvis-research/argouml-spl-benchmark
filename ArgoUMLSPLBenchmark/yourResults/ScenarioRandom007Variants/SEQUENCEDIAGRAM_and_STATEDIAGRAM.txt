@@ -1,0 +1,2 @@
+org.argouml.ui.explorer.rules.GoNamespaceToDiagram getChildren(Object) Refinement
+org.argouml.uml.ui.ActionSequenceDiagram createDiagram(Object) Refinement
